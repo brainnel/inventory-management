@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './Login.css'
 
-const Login = () => {
+const Login = ({ onLoginSuccess }) => {
   const [formData, setFormData] = useState({
     account: '',
     password: ''
@@ -19,8 +19,11 @@ const Login = () => {
     
     // 假登录验证
     if (formData.account === 'admin' && formData.password === '123456') {
-      alert('登录成功！欢迎使用商品管理系统')
       console.log('登录成功:', formData)
+      // 调用登录成功回调
+      if (onLoginSuccess) {
+        onLoginSuccess()
+      }
     } else {
       alert('登录失败！请输入正确的账号密码\n账号：admin\n密码：123456')
       console.log('登录失败:', formData)
