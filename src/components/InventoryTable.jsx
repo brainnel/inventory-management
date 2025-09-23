@@ -81,18 +81,18 @@ const InventoryTable = ({ data, filters }) => {
         <table className="table">
           <thead>
             <tr>
-              <th>商品图片</th>
+              <th>图片</th>
               <th>SKU</th>
               <th>累计销量</th>
               <th>本月销量</th>
               <th>销售天数</th>
-              <th>在库库存</th>
-              <th>在途库存</th>
-              <th>冻结库存</th>
-              <th>可用库存</th>
-              <th>供货价(RMB)</th>
+              <th>在库</th>
+              <th>在途</th>
+              <th>冻结</th>
+              <th>可用</th>
+              <th>供货价</th>
               <th>安全库存</th>
-              <th>库存状态</th>
+              <th>状态</th>
             </tr>
           </thead>
           <tbody>
