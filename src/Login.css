@@ -1,0 +1,194 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  background-color: #f5f7fa;
+}
+
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.login-content {
+  display: flex;
+  background: white;
+  border-radius: 24px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  max-width: 1000px;
+  width: 100%;
+  min-height: 600px;
+  align-items: stretch;
+}
+
+.login-left {
+  flex: 1 1 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.banner-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.login-right {
+  flex: 1 1 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  min-width: 0;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 380px;
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.brand-logo {
+  height: 48px;
+  width: auto;
+}
+
+.login-title {
+  text-align: center;
+  font-size: 18px;
+  color: #6B7280;
+  margin-bottom: 40px;
+  font-weight: 500;
+}
+
+.input-group {
+  margin-bottom: 24px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  margin-left: 4px;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 16px;
+  border: 2px solid #E5E7EB;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background-color: #F9FAFB;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #4F46E5;
+  background-color: white;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+}
+
+.input-group input::placeholder {
+  color: #9CA3AF;
+}
+
+.login-button {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 12px;
+}
+
+.login-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px rgba(79, 70, 229, 0.3);
+}
+
+.login-button:active {
+  transform: translateY(0);
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .login-container {
+    padding: 10px;
+  }
+  
+  .login-content {
+    flex-direction: column;
+    min-height: auto;
+    max-width: 500px;
+  }
+  
+  .login-left {
+    flex: none;
+    padding: 0;
+    min-height: 200px;
+  }
+  
+  .banner-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .login-right {
+    flex: 1;
+    padding: 20px 30px 40px 30px;
+  }
+  
+  .login-form {
+    max-width: none;
+  }
+  
+  .login-title {
+    font-size: 16px;
+    margin-bottom: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-right {
+    padding: 15px 20px 30px 20px;
+  }
+  
+  .brand-section {
+    margin-bottom: 24px;
+  }
+  
+  .brand-logo {
+    height: 40px;
+  }
+}
