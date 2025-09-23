@@ -16,7 +16,15 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log('登录数据:', formData)
+    
+    // 假登录验证
+    if (formData.account === 'admin' && formData.password === '123456') {
+      alert('登录成功！欢迎使用商品管理系统')
+      console.log('登录成功:', formData)
+    } else {
+      alert('登录失败！请输入正确的账号密码\n账号：admin\n密码：123456')
+      console.log('登录失败:', formData)
+    }
   }
 
   return (
@@ -41,7 +49,7 @@ const Login = () => {
                   type="text"
                   id="account"
                   name="account"
-                  placeholder="150150151"
+                  placeholder="admin"
                   value={formData.account}
                   onChange={handleInputChange}
                 />
@@ -53,7 +61,7 @@ const Login = () => {
                   type="password"
                   id="password"
                   name="password"
-                  placeholder="••••••••"
+                  placeholder="123456"
                   value={formData.password}
                   onChange={handleInputChange}
                 />
