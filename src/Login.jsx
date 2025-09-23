@@ -32,7 +32,7 @@ const Login = () => {
               <img src="/logo.png" alt="brainnel logo" className="brand-logo" />
             </div>
             
-            <h2 className="login-title">登录到企业管理系统</h2>
+            <h2 className="login-title">登录到商品管理系统</h2>
             
             <form onSubmit={handleSubmit}>
               <div className="input-group">
