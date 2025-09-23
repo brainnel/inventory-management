@@ -66,12 +66,12 @@ const InventoryTable = ({ data, filters }) => {
     <div className="inventory-table">
       <div className="table-header">
         <div className="table-title-section">
-          <span className="table-icon">📄</span>
+          <img src="/商品库存明细.png" alt="商品库存明细" className="table-icon" />
           <h3 className="table-title">商品库存明细</h3>
         </div>
         <div className="table-actions">
           <button className="export-btn">
-            <span className="export-icon">⬇️</span>
+            <img src="/导出.png" alt="导出" className="export-icon" />
             导出Excel
           </button>
         </div>

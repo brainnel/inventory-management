@@ -33,7 +33,7 @@ const SearchForm = ({ onSearch }) => {
   return (
     <div className="search-form">
       <div className="search-header">
-        <span className="search-icon">🔍</span>
+        <img src="/商品查询.png" alt="商品查询" className="search-icon" />
         <h3 className="search-title">商品查询</h3>
       </div>
       

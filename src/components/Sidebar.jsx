@@ -4,8 +4,18 @@ const Sidebar = () => {
   const [activeTab, setActiveTab] = useState('inventory')
 
   const tabs = [
-    { id: 'inventory', name: '库存管理', icon: '📦' },
-    { id: 'billing', name: '结算管理', icon: '🔒' }
+    { 
+      id: 'inventory', 
+      name: '库存管理', 
+      icon: '/库存icon.png',
+      activeIcon: '/库存-选中.png'
+    },
+    { 
+      id: 'billing', 
+      name: '结算管理', 
+      icon: '/结算icon.png',
+      activeIcon: '/结算-选中.png'
+    }
   ]
 
   return (
@@ -38,7 +48,11 @@ const Sidebar = () => {
               className={`nav-item ${activeTab === tab.id ? 'active' : ''}`}
               onClick={() => setActiveTab(tab.id)}
             >
-              <span className="nav-icon">{tab.icon}</span>
+              <img 
+                src={activeTab === tab.id ? tab.activeIcon : tab.icon} 
+                alt={tab.name}
+                className="nav-icon"
+              />
               <span className="nav-text">{tab.name}</span>
             </button>
           ))}

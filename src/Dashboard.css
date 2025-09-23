@@ -134,7 +134,9 @@
 }
 
 .nav-icon {
-  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
 }
 
 .nav-text {
@@ -215,7 +217,9 @@
 }
 
 .trend-indicator {
-  font-size: 14px;
+  width: 12px;
+  height: 12px;
+  object-fit: contain;
 }
 
 .trend-value {
@@ -234,8 +238,9 @@
 }
 
 .warning-icon {
-  color: #ef4444;
-  font-size: 12px;
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
 }
 
 /* 搜索表单 */
@@ -255,7 +260,9 @@
 }
 
 .search-icon {
-  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
 }
 
 .search-title {
@@ -366,7 +373,9 @@
 }
 
 .table-icon {
-  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
 }
 
 .table-title {
@@ -402,7 +411,9 @@
 }
 
 .export-icon {
-  font-size: 12px;
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
 }
 
 .table-container {

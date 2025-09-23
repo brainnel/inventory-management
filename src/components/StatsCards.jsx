@@ -63,9 +63,11 @@ const StatsCards = ({ data }) => {
               <p className="stats-value">{card.value}</p>
               {card.change && (
                 <div className="stats-trend">
-                  <span className={`trend-indicator ${card.trend}`}>
-                    {card.trend === 'up' ? '↗️' : card.trend === 'warning' ? '⚠️' : ''}
-                  </span>
+                  <img 
+                    src={card.trend === 'up' ? '/上升.png' : card.trend === 'warning' ? '/警告.png' : '/上升.png'}
+                    alt={card.trend}
+                    className={`trend-indicator ${card.trend}`}
+                  />
                   <span className="trend-value">{card.change}</span>
                   <div className="trend-chart">
                     <svg width="60" height="20" viewBox="0 0 60 20">
@@ -81,7 +83,7 @@ const StatsCards = ({ data }) => {
               )}
               {card.trend === 'warning' && (
                 <div className="warning-indicator">
-                  <span className="warning-icon">▲</span>
+                  <img src="/警告.png" alt="警告" className="warning-icon" />
                 </div>
               )}
             </div>
