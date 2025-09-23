@@ -32,7 +32,10 @@ const SearchForm = ({ onSearch }) => {
 
   return (
     <div className="search-form">
-      <h3 className="search-title">商品查询</h3>
+      <div className="search-header">
+        <span className="search-icon">🔍</span>
+        <h3 className="search-title">商品查询</h3>
+      </div>
       
       <form onSubmit={handleSubmit} className="search-form-content">
         <div className="search-row">
@@ -44,7 +47,7 @@ const SearchForm = ({ onSearch }) => {
               name="supplierId"
               value={form.supplierId}
               onChange={handleChange}
-              placeholder="请输入供应商编号"
+              placeholder="输入供应商编号"
             />
           </div>
 
@@ -56,7 +59,7 @@ const SearchForm = ({ onSearch }) => {
               name="platformId"
               value={form.platformId}
               onChange={handleChange}
-              placeholder="请输入平台编号"
+              placeholder="输入平台分配编号"
             />
           </div>
 
@@ -78,10 +81,7 @@ const SearchForm = ({ onSearch }) => {
 
           <div className="form-actions">
             <button type="submit" className="search-btn">
-              查询
-            </button>
-            <button type="button" onClick={handleReset} className="reset-btn">
-              重置
+              搜索
             </button>
           </div>
         </div>

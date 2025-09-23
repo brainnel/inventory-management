@@ -26,25 +26,29 @@ const StatsCards = ({ data }) => {
     {
       title: '商品总数',
       value: formatNumber(stats.totalProducts),
-      icon: '📦',
+      change: '+12',
+      trend: 'up',
       color: 'blue'
     },
     {
-      title: '总销售额',
-      value: formatCurrency(stats.totalSalesAmount),
-      icon: '💰',
-      color: 'green'
+      title: '本月销售额',
+      value: '￥128,560',
+      change: '+12',
+      trend: 'up',
+      color: 'blue'
     },
     {
-      title: '总销量',
-      value: formatNumber(stats.totalSalesQty),
-      icon: '📈',
-      color: 'purple'
+      title: '本月销量',
+      value: '1,560',
+      change: '+12',
+      trend: 'up',
+      color: 'blue'
     },
     {
-      title: '库存不足商品数',
+      title: '库存不足(需补货)',
       value: formatNumber(stats.lowStockCount),
-      icon: '⚠️',
+      change: '',
+      trend: 'warning',
       color: 'red'
     }
   ]
@@ -53,10 +57,34 @@ const StatsCards = ({ data }) => {
     <div className="stats-cards">
       {cards.map((card, index) => (
         <div key={index} className={`stats-card ${card.color}`}>
-          <div className="stats-icon">{card.icon}</div>
           <div className="stats-content">
             <h3 className="stats-title">{card.title}</h3>
-            <p className="stats-value">{card.value}</p>
+            <div className="stats-main">
+              <p className="stats-value">{card.value}</p>
+              {card.change && (
+                <div className="stats-trend">
+                  <span className={`trend-indicator ${card.trend}`}>
+                    {card.trend === 'up' ? '↗️' : card.trend === 'warning' ? '⚠️' : ''}
+                  </span>
+                  <span className="trend-value">{card.change}</span>
+                  <div className="trend-chart">
+                    <svg width="60" height="20" viewBox="0 0 60 20">
+                      <polyline 
+                        points="0,15 10,12 20,8 30,10 40,5 50,7 60,3" 
+                        fill="none" 
+                        stroke={card.trend === 'warning' ? '#ef4444' : '#3b82f6'} 
+                        strokeWidth="2"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              )}
+              {card.trend === 'warning' && (
+                <div className="warning-indicator">
+                  <span className="warning-icon">▲</span>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       ))}

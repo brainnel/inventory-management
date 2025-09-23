@@ -65,9 +65,15 @@ const InventoryTable = ({ data, filters }) => {
   return (
     <div className="inventory-table">
       <div className="table-header">
-        <h3 className="table-title">商品库存列表</h3>
-        <div className="table-info">
-          共 {filteredData.length} 条记录
+        <div className="table-title-section">
+          <span className="table-icon">📄</span>
+          <h3 className="table-title">商品库存明细</h3>
+        </div>
+        <div className="table-actions">
+          <button className="export-btn">
+            <span className="export-icon">⬇️</span>
+            导出Excel
+          </button>
         </div>
       </div>
 
