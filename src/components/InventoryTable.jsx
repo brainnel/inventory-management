@@ -102,16 +102,13 @@ const InventoryTable = ({ data, filters }) => {
                 <tr key={item.id}>
                   <td className="product-image">
                     <img 
-                      src={item.image || '/logo.png'} 
+                      src={item.image || '/示例图片.jpg'} 
                       alt={item.name}
                       className="product-img"
                     />
                   </td>
                   <td className="product-sku">
                     <div className="sku-text">{item.sku}</div>
-                    <div className="product-name">{item.name}</div>
-                    <div className="product-supplier">供应商: {item.supplierId}</div>
-                    <div className="product-platform">平台: {item.platformId}</div>
                   </td>
                   <td>{item.totalSalesQty.toLocaleString()}</td>
                   <td>{item.monthSalesQty}</td>

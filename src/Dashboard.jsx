@@ -23,7 +23,7 @@ const Dashboard = () => {
         id: i + 1,
         sku: `SKU-${1000 + i}`,
         name: `示例商品 ${i + 1}`,
-        image: i < 10 ? '/logo.png' : '/banner.png', // 模拟商品图片
+        image: '/示例图片.jpg', // 使用assets中的实例图片
         supplierId: `S${(i % 5) + 1}`,
         platformId: `P${(i % 3) + 1}`,
         totalSalesAmount: 100000 + i * 100,
