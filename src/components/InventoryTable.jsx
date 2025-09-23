@@ -81,7 +81,8 @@ const InventoryTable = ({ data, filters }) => {
         <table className="table">
           <thead>
             <tr>
-              <th>商品信息</th>
+              <th>商品图片</th>
+              <th>SKU</th>
               <th>累计销量</th>
               <th>本月销量</th>
               <th>销售天数</th>
@@ -99,9 +100,16 @@ const InventoryTable = ({ data, filters }) => {
               const availableStock = item.stockInWarehouse - item.stockFrozen
               return (
                 <tr key={item.id}>
-                  <td className="product-info">
+                  <td className="product-image">
+                    <img 
+                      src={item.image || '/logo.png'} 
+                      alt={item.name}
+                      className="product-img"
+                    />
+                  </td>
+                  <td className="product-sku">
+                    <div className="sku-text">{item.sku}</div>
                     <div className="product-name">{item.name}</div>
-                    <div className="product-sku">SKU: {item.sku}</div>
                     <div className="product-supplier">供应商: {item.supplierId}</div>
                     <div className="product-platform">平台: {item.platformId}</div>
                   </td>
