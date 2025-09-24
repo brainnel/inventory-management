@@ -203,10 +203,10 @@
   gap: 12px;
 }
 
-.stats-left {
+.stats-value-row {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  gap: 8px;
 }
 
 .stats-right {
@@ -226,19 +226,20 @@
 .stats-change {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   font-size: 12px;
 }
 
 .trend-indicator {
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   object-fit: contain;
 }
 
 .trend-value {
   color: #3b82f6;
   font-weight: 600;
+  font-size: 13px;
 }
 
 .trend-chart {
@@ -325,6 +326,26 @@
   outline: none;
   border-color: #4F46E5;
   box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+/* 确保库存状态下拉框始终向下显示 */
+.stock-status-select {
+  position: relative;
+}
+
+.stock-status-select:focus {
+  position: relative;
+  z-index: 10;
+}
+
+/* 强制下拉框向下展开 */
+.form-group:has(.stock-status-select) {
+  position: relative;
+  z-index: 5;
+}
+
+.stock-status-select option {
+  direction: ltr;
 }
 
 .form-actions {

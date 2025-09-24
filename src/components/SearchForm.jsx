@@ -70,6 +70,7 @@ const SearchForm = ({ onSearch }) => {
               name="stockStatus"
               value={form.stockStatus}
               onChange={handleChange}
+              className="stock-status-select"
             >
               {stockStatusOptions.map(option => (
                 <option key={option.value} value={option.value}>

@@ -60,7 +60,7 @@ const StatsCards = ({ data }) => {
           <div className="stats-content">
             <h3 className="stats-title">{card.title}</h3>
             <div className="stats-main">
-              <div className="stats-left">
+              <div className="stats-value-row">
                 <p className="stats-value">{card.value}</p>
                 {card.change && (
                   <div className="stats-change">
@@ -70,6 +70,11 @@ const StatsCards = ({ data }) => {
                       className={`trend-indicator ${card.trend}`}
                     />
                     <span className="trend-value">{card.change}</span>
+                  </div>
+                )}
+                {card.trend === 'warning' && !card.change && (
+                  <div className="warning-indicator">
+                    <img src="/警告.png" alt="警告" className="warning-icon" />
                   </div>
                 )}
               </div>
@@ -84,11 +89,6 @@ const StatsCards = ({ data }) => {
                         strokeWidth="1.5"
                       />
                     </svg>
-                  </div>
-                )}
-                {card.trend === 'warning' && !card.change && (
-                  <div className="warning-indicator">
-                    <img src="/警告.png" alt="警告" className="warning-icon" />
                   </div>
                 )}
               </div>
