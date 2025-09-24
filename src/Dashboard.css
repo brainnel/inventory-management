@@ -179,8 +179,8 @@
 }
 
 .stats-card.red {
-  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-  border-color: #fecaca;
+  background: white;
+  border-color: #e5e7eb;
 }
 
 .stats-content {
