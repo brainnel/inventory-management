@@ -165,7 +165,7 @@
 .stats-card {
   background: white;
   border-radius: 12px;
-  padding: 20px;
+  padding: 18px 16px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   border: 1px solid #e5e7eb;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -198,8 +198,21 @@
 
 .stats-main {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
+  gap: 12px;
+}
+
+.stats-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stats-right {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .stats-value {
@@ -207,9 +220,10 @@
   font-weight: 700;
   margin: 0;
   color: #1f2937;
+  line-height: 1;
 }
 
-.stats-trend {
+.stats-change {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -228,7 +242,7 @@
 }
 
 .trend-chart {
-  margin-left: 8px;
+  margin-left: 4px;
 }
 
 .warning-indicator {
@@ -440,18 +454,19 @@
 }
 
 /* 列宽定义 */
-.table th:nth-child(1) { width: 55px; }  /* 图片 */
-.table th:nth-child(2) { width: 95px; }  /* SKU */
-.table th:nth-child(3) { width: 75px; }  /* 累计销量 */
-.table th:nth-child(4) { width: 75px; }  /* 本月销量 */
-.table th:nth-child(5) { width: 65px; }  /* 销售天数 */
-.table th:nth-child(6) { width: 55px; }  /* 在库 */
-.table th:nth-child(7) { width: 55px; }  /* 在途 */
-.table th:nth-child(8) { width: 55px; }  /* 冻结 */
-.table th:nth-child(9) { width: 55px; }  /* 可用 */
-.table th:nth-child(10) { width: 75px; } /* 供货价 */
-.table th:nth-child(11) { width: 75px; } /* 安全库存 */
-.table th:nth-child(12) { width: 65px; } /* 状态 */
+.table th:nth-child(1) { width: 55px; }   /* 图片 */
+.table th:nth-child(2) { width: 90px; }   /* SKU */
+.table th:nth-child(3) { width: 120px; }  /* 商品名称 */
+.table th:nth-child(4) { width: 75px; }   /* 累计销量 */
+.table th:nth-child(5) { width: 75px; }   /* 本月销量 */
+.table th:nth-child(6) { width: 65px; }   /* 销售天数 */
+.table th:nth-child(7) { width: 55px; }   /* 在库 */
+.table th:nth-child(8) { width: 55px; }   /* 在途 */
+.table th:nth-child(9) { width: 55px; }   /* 冻结 */
+.table th:nth-child(10) { width: 55px; }  /* 可用 */
+.table th:nth-child(11) { width: 75px; }  /* 供货价 */
+.table th:nth-child(12) { width: 75px; }  /* 安全库存 */
+.table th:nth-child(13) { width: 65px; }  /* 状态 */
 
 .table td {
   padding: 10px 4px;
@@ -492,6 +507,21 @@
   font-family: 'Courier New', monospace;
   word-break: break-all;
   line-height: 1.3;
+}
+
+.product-name {
+  padding: 6px 8px;
+  text-align: left;
+}
+
+.name-text {
+  font-weight: 500;
+  color: #374151;
+  font-size: 13px;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .status-badge {
@@ -652,7 +682,7 @@
   }
   
   .table {
-    min-width: 800px;
+    min-width: 920px;
   }
   
   .product-img {

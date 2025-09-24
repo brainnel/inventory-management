@@ -60,32 +60,38 @@ const StatsCards = ({ data }) => {
           <div className="stats-content">
             <h3 className="stats-title">{card.title}</h3>
             <div className="stats-main">
-              <p className="stats-value">{card.value}</p>
-              {card.change && (
-                <div className="stats-trend">
-                  <img 
-                    src={card.trend === 'up' ? '/上升.png' : card.trend === 'warning' ? '/警告.png' : '/上升.png'}
-                    alt={card.trend}
-                    className={`trend-indicator ${card.trend}`}
-                  />
-                  <span className="trend-value">{card.change}</span>
+              <div className="stats-left">
+                <p className="stats-value">{card.value}</p>
+                {card.change && (
+                  <div className="stats-change">
+                    <img 
+                      src={card.trend === 'up' ? '/上升.png' : card.trend === 'warning' ? '/警告.png' : '/上升.png'}
+                      alt={card.trend}
+                      className={`trend-indicator ${card.trend}`}
+                    />
+                    <span className="trend-value">{card.change}</span>
+                  </div>
+                )}
+              </div>
+              <div className="stats-right">
+                {card.change && (
                   <div className="trend-chart">
-                    <svg width="60" height="20" viewBox="0 0 60 20">
+                    <svg width="50" height="16" viewBox="0 0 50 16">
                       <polyline 
-                        points="0,15 10,12 20,8 30,10 40,5 50,7 60,3" 
+                        points="0,12 8,10 16,6 24,8 32,4 40,5 50,2" 
                         fill="none" 
                         stroke={card.trend === 'warning' ? '#ef4444' : '#3b82f6'} 
-                        strokeWidth="2"
+                        strokeWidth="1.5"
                       />
                     </svg>
                   </div>
-                </div>
-              )}
-              {card.trend === 'warning' && (
-                <div className="warning-indicator">
-                  <img src="/警告.png" alt="警告" className="warning-icon" />
-                </div>
-              )}
+                )}
+                {card.trend === 'warning' && !card.change && (
+                  <div className="warning-indicator">
+                    <img src="/警告.png" alt="警告" className="warning-icon" />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
