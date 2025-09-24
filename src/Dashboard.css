@@ -444,7 +444,7 @@
 
 .table th {
   background: #F9FAFB;
-  padding: 12px 4px;
+  padding: 12px 2px;
   text-align: center;
   font-weight: 600;
   color: #374151;
@@ -469,7 +469,7 @@
 .table th:nth-child(13) { width: 65px; }  /* 状态 */
 
 .table td {
-  padding: 10px 4px;
+  padding: 10px 2px;
   border-bottom: 1px solid #E5E7EB;
   vertical-align: middle;
   text-align: center;
@@ -483,7 +483,7 @@
 }
 
 .product-image {
-  padding: 6px;
+  padding: 4px;
 }
 
 .product-img {
@@ -497,7 +497,7 @@
 }
 
 .product-sku {
-  padding: 6px 2px;
+  padding: 6px 1px;
 }
 
 .sku-text {
@@ -510,7 +510,7 @@
 }
 
 .product-name {
-  padding: 6px 8px;
+  padding: 6px 4px;
   text-align: left;
 }
 
