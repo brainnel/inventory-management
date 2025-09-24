@@ -6,6 +6,8 @@ const SearchForm = ({ onSearch }) => {
     platformId: '',
     stockStatus: 'all'
   })
+  
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -21,6 +23,15 @@ const SearchForm = ({ onSearch }) => {
     const resetForm = { supplierId: '', platformId: '', stockStatus: 'all' }
     setForm(resetForm)
     onSearch(resetForm)
+  }
+  
+  const handleDropdownToggle = () => {
+    setIsDropdownOpen(!isDropdownOpen)
+  }
+  
+  const handleOptionSelect = (value) => {
+    setForm(prev => ({ ...prev, stockStatus: value }))
+    setIsDropdownOpen(false)
   }
 
   const stockStatusOptions = [
@@ -64,20 +75,31 @@ const SearchForm = ({ onSearch }) => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="stockStatus">库存状态</label>
-            <select
-              id="stockStatus"
-              name="stockStatus"
-              value={form.stockStatus}
-              onChange={handleChange}
-              className="stock-status-select"
-            >
-              {stockStatusOptions.map(option => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+            <label>库存状态</label>
+            <div className="custom-dropdown">
+              <div 
+                className="dropdown-trigger" 
+                onClick={handleDropdownToggle}
+              >
+                <span className="dropdown-value">
+                  {stockStatusOptions.find(opt => opt.value === form.stockStatus)?.label}
+                </span>
+                <span className={`dropdown-arrow ${isDropdownOpen ? 'open' : ''}`}>▼</span>
+              </div>
+              {isDropdownOpen && (
+                <div className="dropdown-options">
+                  {stockStatusOptions.map(option => (
+                    <div
+                      key={option.value}
+                      className={`dropdown-option ${form.stockStatus === option.value ? 'selected' : ''}`}
+                      onClick={() => handleOptionSelect(option.value)}
+                    >
+                      {option.label}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="form-actions">

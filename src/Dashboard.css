@@ -328,24 +328,85 @@
   box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
-/* 确保库存状态下拉框始终向下显示 */
-.stock-status-select {
+/* 自定义下拉组件样式 */
+.custom-dropdown {
   position: relative;
 }
 
-.stock-status-select:focus {
-  position: relative;
-  z-index: 10;
+.dropdown-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #E5E7EB;
+  border-radius: 8px;
+  background: #F9FAFB;
+  cursor: pointer;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
 }
 
-/* 强制下拉框向下展开 */
-.form-group:has(.stock-status-select) {
-  position: relative;
-  z-index: 5;
+.dropdown-trigger:hover {
+  border-color: #D1D5DB;
 }
 
-.stock-status-select option {
-  direction: ltr;
+.dropdown-trigger:focus,
+.dropdown-trigger:focus-within {
+  outline: none;
+  border-color: #4F46E5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.dropdown-value {
+  color: #374151;
+}
+
+.dropdown-arrow {
+  color: #6B7280;
+  font-size: 12px;
+  transition: transform 0.2s ease;
+}
+
+.dropdown-arrow.open {
+  transform: rotate(180deg);
+}
+
+.dropdown-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #E5E7EB;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  z-index: 20;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.dropdown-option {
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #374151;
+  transition: background-color 0.2s ease;
+}
+
+.dropdown-option:hover {
+  background-color: #F3F4F6;
+}
+
+.dropdown-option.selected {
+  background-color: #EFF6FF;
+  color: #1D4ED8;
+  font-weight: 500;
+}
+
+.dropdown-option:last-child {
+  border-radius: 0 0 8px 8px;
 }
 
 .form-actions {
