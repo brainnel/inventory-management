@@ -317,6 +317,7 @@
   padding: 12px;
   border: 2px solid #E5E7EB;
   border-radius: 8px;
+  background: white;
   font-size: 14px;
   transition: border-color 0.3s ease;
 }
@@ -341,10 +342,10 @@
   padding: 12px;
   border: 2px solid #E5E7EB;
   border-radius: 8px;
-  background: #F9FAFB;
+  background: white;
   cursor: pointer;
   font-size: 14px;
-  transition: border-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .dropdown-trigger:hover {
