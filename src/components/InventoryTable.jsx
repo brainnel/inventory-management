@@ -87,12 +87,10 @@ const InventoryTable = ({ data, filters }) => {
               <th>累计销量</th>
               <th>本月销量</th>
               <th>销售天数</th>
-              <th>在库</th>
+              <th>库存</th>
               <th>在途</th>
-              <th>冻结</th>
-              <th>可用</th>
+              <th>在售</th>
               <th>供货价</th>
-              <th>安全库存</th>
               <th>状态</th>
             </tr>
           </thead>
@@ -119,10 +117,8 @@ const InventoryTable = ({ data, filters }) => {
                   <td>{item.salesDays}</td>
                   <td>{item.stockInWarehouse}</td>
                   <td>{item.stockInTransit}</td>
-                  <td>{item.stockFrozen}</td>
                   <td>{availableStock}</td>
                   <td>{formatCurrency(item.costRmb)}</td>
-                  <td>{item.safetyStock}</td>
                   <td>
                     <span className={`status-badge ${getStatusClass(item.status)}`}>
                       {item.status}
