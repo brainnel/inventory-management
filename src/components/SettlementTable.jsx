@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react'
+import MonthPicker from './MonthPicker'
 
 const SettlementTable = ({ data, filters, onSearch }) => {
   const [currentPage, setCurrentPage] = useState(1)
@@ -76,12 +77,10 @@ const SettlementTable = ({ data, filters, onSearch }) => {
             />
           </div>
           <div className="filter-item">
-            <input
-              type="text"
-              placeholder="请选择结算周期对应的年月"
-              className="filter-input date-input"
+            <MonthPicker
               value={filters.dateRange}
-              onChange={(e) => onSearch({ ...filters, dateRange: e.target.value })}
+              onChange={(value) => onSearch({ ...filters, dateRange: value })}
+              placeholder="请选择结算周期对应的年月"
             />
           </div>
           <div className="filter-item">
