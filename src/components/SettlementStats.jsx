@@ -40,6 +40,13 @@ const SettlementStats = ({ data }) => {
               <p className="balance-description">银行处理中金额</p>
             </div>
           </div>
+          <div className="balance-card completed">
+            <div className="balance-info">
+              <span className="balance-label">已打款金额</span>
+              <div className="balance-amount">{formatCurrency(stats.confirmedAmount)}<span className="currency">元</span></div>
+              <p className="balance-description">已完成打款的总金额</p>
+            </div>
+          </div>
         </div>
       </div>
 

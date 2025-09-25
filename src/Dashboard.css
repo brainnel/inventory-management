@@ -843,19 +843,26 @@
 
 .balance-cards {
   display: flex;
-  gap: 20px;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .balance-card {
   flex: 1;
+  min-width: 280px;
   background: #f9fafb;
   border-radius: 8px;
-  padding: 20px;
+  padding: 18px;
   border: 1px solid #e5e7eb;
 }
 
 .balance-card.pending {
   background: #fefefe;
+}
+
+.balance-card.completed {
+  background: #f0f9f4;
+  border: 1px solid #d1fae5;
 }
 
 .balance-content {
