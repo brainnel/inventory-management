@@ -85,8 +85,6 @@ const InventoryTable = ({ data, filters }) => {
               <th>SKU</th>
               <th>商品名称</th>
               <th>累计销量</th>
-              <th>本月销量</th>
-              <th>销售天数</th>
               <th>库存</th>
               <th>在途</th>
               <th>在售</th>
@@ -113,8 +111,6 @@ const InventoryTable = ({ data, filters }) => {
                     <div className="name-text">{item.name}</div>
                   </td>
                   <td>{item.totalSalesQty.toLocaleString()}</td>
-                  <td>{item.monthSalesQty}</td>
-                  <td>{item.salesDays}</td>
                   <td>{item.stockInWarehouse}</td>
                   <td>{item.stockInTransit}</td>
                   <td>{availableStock}</td>

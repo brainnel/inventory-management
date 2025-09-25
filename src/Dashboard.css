@@ -542,16 +542,14 @@
 
 /* 列宽定义 */
 .table th:nth-child(1) { width: 55px; }   /* 图片 */
-.table th:nth-child(2) { width: 90px; }   /* SKU */
-.table th:nth-child(3) { width: 120px; }  /* 商品名称 */
-.table th:nth-child(4) { width: 85px; }   /* 累计销量 */
-.table th:nth-child(5) { width: 85px; }   /* 本月销量 */
-.table th:nth-child(6) { width: 75px; }   /* 销售天数 */
-.table th:nth-child(7) { width: 65px; }   /* 库存 */
-.table th:nth-child(8) { width: 65px; }   /* 在途 */
-.table th:nth-child(9) { width: 65px; }   /* 在售 */
-.table th:nth-child(10) { width: 85px; }  /* 供货价 */
-.table th:nth-child(11) { width: 75px; }  /* 状态 */
+.table th:nth-child(2) { width: 100px; }  /* SKU */
+.table th:nth-child(3) { width: 140px; }  /* 商品名称 */
+.table th:nth-child(4) { width: 100px; }  /* 累计销量 */
+.table th:nth-child(5) { width: 80px; }   /* 库存 */
+.table th:nth-child(6) { width: 80px; }   /* 在途 */
+.table th:nth-child(7) { width: 80px; }   /* 在售 */
+.table th:nth-child(8) { width: 100px; }  /* 供货价 */
+.table th:nth-child(9) { width: 85px; }   /* 状态 */
 
 .table td {
   padding: 10px 2px;
@@ -769,7 +767,7 @@
   }
   
   .table {
-    min-width: 770px;
+    min-width: 680px;
   }
   
   .product-img {
