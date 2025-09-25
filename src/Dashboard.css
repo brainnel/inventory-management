@@ -848,18 +848,18 @@
 .balance-card {
   flex: 1;
   min-width: 280px;
-  background: #f9fafb;
+  background: white;
   border-radius: 8px;
   padding: 18px;
   border: 1px solid #e5e7eb;
 }
 
 .balance-card.pending {
-  background: #fefefe;
+  background: white;
 }
 
 .balance-card.completed {
-  background: #f9fafb;
+  background: white;
   border: 1px solid #e5e7eb;
 }
 
