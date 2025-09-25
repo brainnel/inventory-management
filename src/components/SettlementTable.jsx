@@ -57,7 +57,7 @@ const SettlementTable = ({ data, filters, onSearch }) => {
     switch (status) {
       case '已打款': return 'status-confirmed'
       case '打款中': return 'status-processing'
-      case '待审核': return 'status-pending'
+      case '待打款': return 'status-pending'
       default: return ''
     }
   }

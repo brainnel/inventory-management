@@ -3,7 +3,7 @@ import React from 'react'
 const SettlementStats = ({ data }) => {
   // 计算统计数据
   const stats = {
-    pendingAmount: data.filter(item => item.status === '待审核').reduce((sum, item) => sum + item.amount, 0),
+    pendingAmount: data.filter(item => item.status === '待打款').reduce((sum, item) => sum + item.amount, 0),
     processingAmount: data.filter(item => item.status === '打款中').reduce((sum, item) => sum + item.amount, 0),
     confirmedAmount: data.filter(item => item.status === '已打款').reduce((sum, item) => sum + item.amount, 0),
     totalAmount: data.reduce((sum, item) => sum + item.amount, 0)

@@ -6,7 +6,7 @@ const StatusSelect = ({ value, onChange }) => {
 
   const statusOptions = [
     { value: 'all', label: '全部' },
-    { value: '待审核', label: '待审核' },
+    { value: '待打款', label: '待打款' },
     { value: '打款中', label: '打款中' },
     { value: '已打款', label: '已打款' }
   ]
