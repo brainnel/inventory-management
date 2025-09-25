@@ -23,7 +23,6 @@ const Sidebar = ({ activeTab, onTabChange }) => {
       <header className="top-header">
         <div className="header-left">
           <img src="/logo.png" alt="brainnel" className="header-logo" />
-          <span className="header-brand">brainnel</span>
         </div>
         
         <div className="header-right">
