@@ -62,6 +62,7 @@ const SettlementTable = ({ data, filters, onSearch }) => {
 
   return (
     <div className="settlement-table-container">
+      <h2 className="section-title">账单管理</h2>
       {/* 搜索过滤器 */}
       <div className="settlement-filters-section">
         <div className="filter-row">
