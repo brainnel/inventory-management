@@ -4,8 +4,11 @@ import Sidebar from './components/Sidebar'
 import StatsCards from './components/StatsCards'
 import SearchForm from './components/SearchForm'
 import InventoryTable from './components/InventoryTable'
+import SettlementPage from './components/SettlementPage'
 
 const Dashboard = () => {
+  const [activeTab, setActiveTab] = useState('inventory')
+  
   // 查询条件
   const [filters, setFilters] = useState({
     supplierId: '',
@@ -42,17 +45,37 @@ const Dashboard = () => {
   }, [])
 
   const handleSearch = (next) => setFilters(next)
+  const handleTabChange = (tabId) => setActiveTab(tabId)
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'inventory':
+        return (
+          <>
+            <StatsCards data={data} />
+            <SearchForm onSearch={handleSearch} />
+            <InventoryTable data={data} filters={filters} />
+          </>
+        )
+      case 'billing':
+        return <SettlementPage />
+      default:
+        return (
+          <>
+            <StatsCards data={data} />
+            <SearchForm onSearch={handleSearch} />
+            <InventoryTable data={data} filters={filters} />
+          </>
+        )
+    }
+  }
 
   return (
     <div className="layout">
-      <Sidebar />
+      <Sidebar activeTab={activeTab} onTabChange={handleTabChange} />
 
       <main className="content">
-        <StatsCards data={data} />
-
-        <SearchForm onSearch={handleSearch} />
-
-        <InventoryTable data={data} filters={filters} />
+        {renderContent()}
       </main>
     </div>
   )

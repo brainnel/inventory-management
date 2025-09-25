@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 
-const Sidebar = () => {
-  const [activeTab, setActiveTab] = useState('inventory')
+const Sidebar = ({ activeTab, onTabChange }) => {
 
   const tabs = [
     { 
@@ -46,7 +45,7 @@ const Sidebar = () => {
             <button
               key={tab.id}
               className={`nav-item ${activeTab === tab.id ? 'active' : ''}`}
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => onTabChange(tab.id)}
             >
               <img 
                 src={activeTab === tab.id ? tab.activeIcon : tab.icon} 
