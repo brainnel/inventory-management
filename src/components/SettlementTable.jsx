@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react'
 import MonthPicker from './MonthPicker'
+import StatusSelect from './StatusSelect'
 
 const SettlementTable = ({ data, filters, onSearch }) => {
   const [currentPage, setCurrentPage] = useState(1)
@@ -84,16 +85,10 @@ const SettlementTable = ({ data, filters, onSearch }) => {
             />
           </div>
           <div className="filter-item">
-            <select
-              className="filter-select"
+            <StatusSelect
               value={filters.billStatus}
-              onChange={(e) => onSearch({ ...filters, billStatus: e.target.value })}
-            >
-              <option value="all">账单状态 全部</option>
-              <option value="已确认">已确认</option>
-              <option value="处理中">处理中</option>
-              <option value="待审核">待审核</option>
-            </select>
+              onChange={(value) => onSearch({ ...filters, billStatus: value })}
+            />
           </div>
         </div>
       </div>
