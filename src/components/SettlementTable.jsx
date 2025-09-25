@@ -101,7 +101,6 @@ const SettlementTable = ({ data, filters, onSearch }) => {
               <tr>
                 <th>出账日</th>
                 <th>账单编号</th>
-                <th>业务来源</th>
                 <th>结算期间</th>
                 <th>金额(元)</th>
                 <th>状态</th>
@@ -113,7 +112,6 @@ const SettlementTable = ({ data, filters, onSearch }) => {
                 <tr key={item.id}>
                   <td>{item.exportDate}</td>
                   <td className="bill-number">{item.billNumber}</td>
-                  <td>{item.businessSource}</td>
                   <td>{item.settlementPeriod}</td>
                   <td className="amount">{formatCurrency(item.amount)}</td>
                   <td>

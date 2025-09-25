@@ -43,40 +43,6 @@ const SettlementStats = ({ data }) => {
         </div>
       </div>
 
-      <div className="settlement-overview-section">
-        <h2 className="section-title">收支提现</h2>
-        <div className="settlement-tabs">
-          <button className="settlement-tab active">收支明细</button>
-          <button className="settlement-tab">提现记录</button>
-        </div>
-        <div className="settlement-filters">
-          <div className="filter-group">
-            <label>交易类型</label>
-            <select className="filter-select">
-              <option value="all">全部</option>
-              <option value="income">收入</option>
-              <option value="withdraw">提现</option>
-            </select>
-          </div>
-          <div className="filter-group">
-            <input type="text" placeholder="业务编号 请输入" className="filter-input" />
-          </div>
-        </div>
-        <div className="settlement-table-header">
-          <div className="header-cell">时间</div>
-          <div className="header-cell">业务编号</div>
-          <div className="header-cell">交易类型</div>
-          <div className="header-cell">收支金额(元)</div>
-          <div className="header-cell">账户余额(元)</div>
-          <div className="header-cell">备注</div>
-        </div>
-        <div className="empty-state">
-          <div className="empty-illustration">
-            <img src="/empty-state.png" alt="暂无数据" className="empty-image" />
-          </div>
-          <p className="empty-text">暂未产生收支明细</p>
-        </div>
-      </div>
     </div>
   )
 }
