@@ -80,21 +80,21 @@ const SettlementTable = ({ data, filters, onSearch }) => {
             <MonthPicker
               value={filters.dateRange}
               onChange={(value) => onSearch({ ...filters, dateRange: value })}
-              placeholder="请选择结算周期对应的年月"
+              placeholder="选择结算周期"
             />
           </div>
           <div className="filter-item">
-            <label>账单状态</label>
-            <select
-              className="filter-select"
-              value={filters.billStatus}
-              onChange={(e) => onSearch({ ...filters, billStatus: e.target.value })}
-            >
-              <option value="all">全部</option>
-              <option value="已确认">已确认</option>
-              <option value="处理中">处理中</option>
-              <option value="待审核">待审核</option>
-            </select>
+            <input
+              type="text"
+              placeholder="账单状态 全部"
+              className="filter-input"
+              value={filters.billStatus === 'all' ? '' : filters.billStatus}
+              onChange={(e) => {
+                const value = e.target.value.trim()
+                const status = value === '' ? 'all' : value
+                onSearch({ ...filters, billStatus: status })
+              }}
+            />
           </div>
         </div>
       </div>

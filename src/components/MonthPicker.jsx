@@ -54,7 +54,7 @@ const MonthPicker = ({ value, onChange, placeholder }) => {
     if (value) {
       return value
     }
-    return placeholder || '请选择结算周期对应的年月'
+    return placeholder || '选择结算周期'
   }
 
   return (
