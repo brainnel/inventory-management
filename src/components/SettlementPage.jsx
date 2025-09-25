@@ -13,7 +13,7 @@ const SettlementPage = () => {
   // 模拟结算数据
   const data = useMemo(() => {
     const items = Array.from({ length: 25 }).map((_, i) => {
-      const statuses = ['已确认', '处理中', '待审核']
+      const statuses = ['待审核', '打款中', '已打款']
       const amounts = [2903.39, 2748.63, 1640, 1585.8, 1875.29, 1550.65, 1882.88, 1756.84, 2004.14, 5392.73]
       
       const currentDate = new Date()

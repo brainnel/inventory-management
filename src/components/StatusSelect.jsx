@@ -6,9 +6,9 @@ const StatusSelect = ({ value, onChange }) => {
 
   const statusOptions = [
     { value: 'all', label: '全部' },
-    { value: '已确认', label: '已确认' },
-    { value: '处理中', label: '处理中' },
-    { value: '待审核', label: '待审核' }
+    { value: '待审核', label: '待审核' },
+    { value: '打款中', label: '打款中' },
+    { value: '已打款', label: '已打款' }
   ]
 
   // 点击外部关闭下拉框

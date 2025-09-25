@@ -55,8 +55,8 @@ const SettlementTable = ({ data, filters, onSearch }) => {
 
   const getStatusClass = (status) => {
     switch (status) {
-      case '已确认': return 'status-confirmed'
-      case '处理中': return 'status-processing'
+      case '已打款': return 'status-confirmed'
+      case '打款中': return 'status-processing'
       case '待审核': return 'status-pending'
       default: return ''
     }
