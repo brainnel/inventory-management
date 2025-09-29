@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
 import './Login.css'
+import { authAPI, authUtils } from './services/api'
 
 const Login = ({ onLoginSuccess }) => {
   const [formData, setFormData] = useState({
-    account: '',
+    username: '',
     password: ''
   })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const handleInputChange = (e) => {
     setFormData({
@@ -14,19 +17,29 @@ const Login = ({ onLoginSuccess }) => {
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
+    setLoading(true)
+    setError('')
     
-    // 假登录验证
-    if (formData.account === 'admin' && formData.password === '123456') {
-      console.log('登录成功:', formData)
+    try {
+      const response = await authAPI.login(formData.username, formData.password)
+      
+      // 保存认证信息
+      authUtils.saveAuth(response.token, response.user)
+      
+      console.log('登录成功:', response)
+      
       // 调用登录成功回调
       if (onLoginSuccess) {
-        onLoginSuccess()
+        onLoginSuccess(response.user)
       }
-    } else {
-      alert('登录失败！请输入正确的账号密码\n账号：admin\n密码：123456')
-      console.log('登录失败:', formData)
+    } catch (error) {
+      console.error('登录失败:', error)
+      const errorMessage = error.response?.data?.detail || '登录失败，请检查用户名和密码'
+      setError(errorMessage)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -43,18 +56,26 @@ const Login = ({ onLoginSuccess }) => {
               <img src="/logo.png" alt="brainnel logo" className="brand-logo" />
             </div>
             
-            <h2 className="login-title">登录到商品管理系统</h2>
+            <h2 className="login-title">登录到仓库管理系统</h2>
+            
+            {error && (
+              <div className="error-message" style={{ color: '#ef4444', marginBottom: '1rem', fontSize: '14px' }}>
+                {error}
+              </div>
+            )}
             
             <form onSubmit={handleSubmit}>
               <div className="input-group">
-                <label htmlFor="account">账号</label>
+                <label htmlFor="username">用户名</label>
                 <input
                   type="text"
-                  id="account"
-                  name="account"
-                  placeholder="admin"
-                  value={formData.account}
+                  id="username"
+                  name="username"
+                  placeholder="请输入用户名"
+                  value={formData.username}
                   onChange={handleInputChange}
+                  disabled={loading}
+                  required
                 />
               </div>
               
@@ -64,14 +85,16 @@ const Login = ({ onLoginSuccess }) => {
                   type="password"
                   id="password"
                   name="password"
-                  placeholder="123456"
+                  placeholder="请输入密码"
                   value={formData.password}
                   onChange={handleInputChange}
+                  disabled={loading}
+                  required
                 />
               </div>
               
-              <button type="submit" className="login-button">
-                登录
+              <button type="submit" className="login-button" disabled={loading}>
+                {loading ? '登录中...' : '登录'}
               </button>
             </form>
           </div>

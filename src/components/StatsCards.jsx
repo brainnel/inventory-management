@@ -4,9 +4,10 @@ const StatsCards = ({ data }) => {
   // 统计数据计算
   const stats = {
     totalProducts: data.length,
-    totalSalesAmount: data.reduce((sum, item) => sum + item.totalSalesAmount, 0),
-    totalSalesQty: data.reduce((sum, item) => sum + item.totalSalesQty, 0),
-    lowStockCount: data.filter(item => item.status === '不足').length,
+    totalSalesQty: data.reduce((sum, item) => sum + (item.total_sales || 0), 0),
+    lowStockCount: data.filter(item => (item.stock || 0) < 10).length, // 定义库存低于10为不足
+    sufficientStockCount: data.filter(item => (item.stock || 0) >= 50).length, // 定义库存大于等于50为充足
+    warningStockCount: data.filter(item => (item.stock || 0) >= 10 && (item.stock || 0) < 50).length, // 定义库存10-49为预警
   }
 
   const formatCurrency = (amount) => {
@@ -22,27 +23,46 @@ const StatsCards = ({ data }) => {
     return new Intl.NumberFormat('zh-CN').format(number)
   }
 
+  // 获取趋势颜色
+  const getTrendColor = (cardColor, trend) => {
+    if (trend === 'warning') return '#ef4444'
+    switch (cardColor) {
+      case 'green': return '#16a34a'
+      case 'orange': return '#ea580c'
+      case 'red': return '#ef4444'
+      case 'blue':
+      default: return '#3b82f6'
+    }
+  }
+
   const cards = [
     {
       title: '商品总数',
       value: formatNumber(stats.totalProducts),
-      change: '+12',
+      change: '',
       trend: 'up',
       color: 'blue'
     },
     {
-      title: '本月销售额',
-      value: '￥128,560',
-      change: '+12',
+      title: '累计销量',
+      value: formatNumber(stats.totalSalesQty),
+      change: '',
       trend: 'up',
       color: 'blue'
     },
     {
-      title: '本月销量',
-      value: '1,560',
-      change: '+12',
+      title: '库存充足',
+      value: formatNumber(stats.sufficientStockCount),
+      change: '',
       trend: 'up',
-      color: 'blue'
+      color: 'green'
+    },
+    {
+      title: '库存预警',
+      value: formatNumber(stats.warningStockCount),
+      change: '',
+      trend: 'warning',
+      color: 'orange'
     },
     {
       title: '库存不足(需补货)',
@@ -69,7 +89,7 @@ const StatsCards = ({ data }) => {
                       alt={card.trend}
                       className={`trend-indicator ${card.trend}`}
                     />
-                    <span className="trend-value">{card.change}</span>
+                    <span className="trend-value" style={{ color: getTrendColor(card.color, card.trend) }}>{card.change}</span>
                   </div>
                 )}
                 {card.trend === 'warning' && !card.change && (
@@ -85,7 +105,7 @@ const StatsCards = ({ data }) => {
                       <polyline 
                         points="0,12 8,10 16,6 24,8 32,4 40,5 50,2" 
                         fill="none" 
-                        stroke={card.trend === 'warning' ? '#ef4444' : '#3b82f6'} 
+                        stroke={getTrendColor(card.color, card.trend)} 
                         strokeWidth="1.5"
                       />
                     </svg>

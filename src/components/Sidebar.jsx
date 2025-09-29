@@ -1,6 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-const Sidebar = ({ activeTab, onTabChange }) => {
+const Sidebar = ({ activeTab, onTabChange, userInfo, onLogout }) => {
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false)
+
+  const handleUserDropdownToggle = () => {
+    setIsUserDropdownOpen(!isUserDropdownOpen)
+  }
+
+  const handleLogout = () => {
+    setIsUserDropdownOpen(false)
+    if (onLogout) {
+      onLogout()
+    }
+  }
+
+  // 获取用户名第一个字符作为头像
+  const getUserInitial = () => {
+    if (!userInfo?.username) return 'U'
+    return userInfo.username.charAt(0).toUpperCase()
+  }
 
   const tabs = [
     { 
@@ -26,13 +44,52 @@ const Sidebar = ({ activeTab, onTabChange }) => {
         </div>
         
         <div className="header-right">
-          <div className="user-info">
-            <div className="user-avatar">J</div>
-            <div className="user-details">
-              <span className="user-name">JASMIN</span>
-              <span className="user-id">ID 675859</span>
+          <div className="user-info" style={{ position: 'relative' }}>
+            <div 
+              className="user-info-trigger"
+              onClick={handleUserDropdownToggle}
+              style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+            >
+              <div className="user-avatar">{getUserInitial()}</div>
+              <div className="user-details">
+                <span className="user-name">{userInfo?.full_name || userInfo?.username || '用户'}</span>
+                <span className="user-id">{userInfo?.supplier_no || ''}</span>
+              </div>
+              <span className={`dropdown-arrow ${isUserDropdownOpen ? 'open' : ''}`}>▼</span>
             </div>
-            <span className="dropdown-arrow">▼</span>
+            
+            {isUserDropdownOpen && (
+              <div className="user-dropdown" style={{
+                position: 'absolute',
+                top: '100%',
+                right: 0,
+                background: 'white',
+                border: '1px solid #e0e0e0',
+                borderRadius: '8px',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                minWidth: '150px',
+                zIndex: 1000,
+                marginTop: '8px'
+              }}>
+                <button 
+                  onClick={handleLogout}
+                  style={{
+                    width: '100%',
+                    padding: '12px 16px',
+                    border: 'none',
+                    background: 'none',
+                    textAlign: 'left',
+                    cursor: 'pointer',
+                    color: '#ef4444',
+                    fontSize: '14px'
+                  }}
+                  onMouseOver={(e) => e.target.style.backgroundColor = '#f5f5f5'}
+                  onMouseOut={(e) => e.target.style.backgroundColor = 'transparent'}
+                >
+                  退出登录
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </header>

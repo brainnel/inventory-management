@@ -1,17 +1,17 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 
 const InventoryTable = ({ data, filters }) => {
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
+  const [previewImage, setPreviewImage] = useState(null)
 
   // 过滤数据
   const filteredData = useMemo(() => {
     return data.filter(item => {
-      const matchSupplier = !filters.supplierId || item.supplierId.includes(filters.supplierId)
-      const matchPlatform = !filters.platformId || item.platformId.includes(filters.platformId)
+      const matchSku = !filters.sku || (item.internal_no && item.internal_no.includes(filters.sku))
       const matchStatus = filters.stockStatus === 'all' || item.status === filters.stockStatus
       
-      return matchSupplier && matchPlatform && matchStatus
+      return matchSku && matchStatus
     })
   }, [data, filters])
 
@@ -62,6 +62,42 @@ const InventoryTable = ({ data, filters }) => {
     }
   }
 
+  // 图片预览相关函数
+  const handleImageClick = (imageUrl, productName) => {
+    setPreviewImage({ url: imageUrl, name: productName })
+  }
+
+  const closeImagePreview = () => {
+    setPreviewImage(null)
+  }
+
+  // 点击背景关闭预览
+  const handleBackdropClick = (e) => {
+    if (e.target === e.currentTarget) {
+      closeImagePreview()
+    }
+  }
+
+  // 键盘事件处理ESC键关闭预览
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && previewImage) {
+        closeImagePreview()
+      }
+    }
+
+    if (previewImage) {
+      document.addEventListener('keydown', handleKeyDown)
+      // 阻止背景滚动
+      document.body.style.overflow = 'hidden'
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      document.body.style.overflow = 'unset'
+    }
+  }, [previewImage])
+
   return (
     <div className="inventory-table">
       <div className="table-header">
@@ -93,31 +129,37 @@ const InventoryTable = ({ data, filters }) => {
             </tr>
           </thead>
           <tbody>
-            {paginatedData.map(item => {
-              const availableStock = item.stockInWarehouse - item.stockFrozen
+            {paginatedData.map((item, index) => {
+              // 根据新的数据结构计算字段
+              const availableStock = item.stock || 0 // 在售
+              const inTransitStock = Math.max(0, (item.supply_stock || 0) - (item.stock || 0) - (item.locked_stock || 0)) // 在途，负数显示0
+              const status = '充足' // 根据需求先都写充足
+              
               return (
-                <tr key={item.id}>
+                <tr key={item.internal_no || index}>
                   <td className="product-image">
                     <img 
-                      src={item.image || '/示例图片.jpg'} 
-                      alt={item.name}
+                      src={item.sku_image_url || '/示例图片.jpg'} 
+                      alt={item.name_cn || ''}
                       className="product-img"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => handleImageClick(item.sku_image_url || '/示例图片.jpg', item.name_cn || '')}
                     />
                   </td>
                   <td className="product-sku">
-                    <div className="sku-text">{item.sku}</div>
+                    <div className="sku-text">{item.internal_no || ''}</div>
                   </td>
                   <td className="product-name">
-                    <div className="name-text">{item.name}</div>
+                    <div className="name-text">{item.name_cn || ''}</div>
                   </td>
-                  <td>{item.totalSalesQty.toLocaleString()}</td>
-                  <td>{item.stockInWarehouse}</td>
-                  <td>{item.stockInTransit}</td>
+                  <td>{(item.total_sales || 0).toLocaleString()}</td>
+                  <td>{item.supply_stock || 0}</td>
+                  <td>{inTransitStock}</td>
                   <td>{availableStock}</td>
-                  <td>{formatCurrency(item.costRmb)}</td>
+                  <td>{item.price ? `${parseFloat(item.price).toLocaleString()} FCFA` : '0 FCFA'}</td>
                   <td>
-                    <span className={`status-badge ${getStatusClass(item.status)}`}>
-                      {item.status}
+                    <span className={`status-badge ${getStatusClass(status)}`}>
+                      {status}
                     </span>
                   </td>
                 </tr>
@@ -174,6 +216,88 @@ const InventoryTable = ({ data, filters }) => {
           <span>页</span>
         </div>
       </div>
+
+      {/* 图片预览模态框 */}
+      {previewImage && (
+        <div 
+          className="image-preview-overlay"
+          onClick={handleBackdropClick}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 1000,
+            cursor: 'pointer'
+          }}
+        >
+          <div 
+            className="image-preview-content"
+            style={{
+              position: 'relative',
+              maxWidth: '90vw',
+              maxHeight: '90vh',
+              cursor: 'default'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={closeImagePreview}
+              style={{
+                position: 'absolute',
+                top: '-40px',
+                right: '0',
+                background: 'rgba(255, 255, 255, 0.9)',
+                border: 'none',
+                borderRadius: '50%',
+                width: '32px',
+                height: '32px',
+                fontSize: '18px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#333'
+              }}
+            >
+              ×
+            </button>
+            <img 
+              src={previewImage.url}
+              alt={previewImage.name}
+              style={{
+                maxWidth: '100%',
+                maxHeight: '100%',
+                objectFit: 'contain',
+                borderRadius: '8px',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)'
+              }}
+            />
+            {previewImage.name && (
+              <div 
+                style={{
+                  position: 'absolute',
+                  bottom: '-40px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  color: 'white',
+                  fontSize: '14px',
+                  textAlign: 'center',
+                  maxWidth: '300px',
+                  wordBreak: 'break-word'
+                }}
+              >
+                {previewImage.name}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 
 const SearchForm = ({ onSearch }) => {
   const [form, setForm] = useState({
-    supplierId: '',
-    platformId: '',
+    sku: '',
     stockStatus: 'all'
   })
   
@@ -20,7 +19,7 @@ const SearchForm = ({ onSearch }) => {
   }
 
   const handleReset = () => {
-    const resetForm = { supplierId: '', platformId: '', stockStatus: 'all' }
+    const resetForm = { sku: '', stockStatus: 'all' }
     setForm(resetForm)
     onSearch(resetForm)
   }
@@ -51,26 +50,14 @@ const SearchForm = ({ onSearch }) => {
       <form onSubmit={handleSubmit} className="search-form-content">
         <div className="search-row">
           <div className="form-group">
-            <label htmlFor="supplierId">供应商编号</label>
+            <label htmlFor="sku">SKU编号</label>
             <input
               type="text"
-              id="supplierId"
-              name="supplierId"
-              value={form.supplierId}
+              id="sku"
+              name="sku"
+              value={form.sku}
               onChange={handleChange}
-              placeholder="输入供应商编号"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="platformId">平台编号</label>
-            <input
-              type="text"
-              id="platformId"
-              name="platformId"
-              value={form.platformId}
-              onChange={handleChange}
-              placeholder="输入平台分配编号"
+              placeholder="输入SKU编号"
             />
           </div>
 
