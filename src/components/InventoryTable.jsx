@@ -94,12 +94,12 @@ const InventoryTable = ({ data, filters, pagination, onPageChange, onPageSizeCha
     <div className="inventory-table">
       <div className="table-header">
         <div className="table-title-section">
-          <img src="/商品库存明细.png" alt="商品库存明细" className="table-icon" />
+          <img src={`${import.meta.env.BASE_URL}商品库存明细.png`} alt="商品库存明细" className="table-icon" />
           <h3 className="table-title">商品库存明细</h3>
         </div>
         <div className="table-actions">
           <button className="export-btn">
-            <img src="/导出.png" alt="导出" className="export-icon" />
+            <img src={`${import.meta.env.BASE_URL}导出.png`} alt="导出" className="export-icon" />
             导出Excel
           </button>
         </div>
@@ -131,11 +131,11 @@ const InventoryTable = ({ data, filters, pagination, onPageChange, onPageSizeCha
                 <tr key={item.internal_no || index}>
                   <td className="product-image">
                     <img 
-                      src={item.sku_image_url || '/示例图片.jpg'} 
+                      src={item.sku_image_url || `${import.meta.env.BASE_URL}示例图片.jpg`} 
                       alt={item.name_cn || ''}
                       className="product-img"
                       style={{ cursor: 'pointer' }}
-                      onClick={() => handleImageClick(item.sku_image_url || '/示例图片.jpg', item.name_cn || '')}
+                      onClick={() => handleImageClick(item.sku_image_url || `${import.meta.env.BASE_URL}示例图片.jpg`, item.name_cn || '')}
                     />
                   </td>
                   <td className="product-sku">

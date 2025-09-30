@@ -88,7 +88,7 @@ const StatsCards = ({ statistics }) => {
                 {card.change && (
                   <div className="stats-change">
                     <img 
-                      src={card.trend === 'up' ? '/上升.png' : card.trend === 'warning' ? '/警告.png' : '/上升.png'}
+                      src={card.trend === 'up' ? `${import.meta.env.BASE_URL}上升.png` : card.trend === 'warning' ? `${import.meta.env.BASE_URL}警告.png` : `${import.meta.env.BASE_URL}上升.png`}
                       alt={card.trend}
                       className={`trend-indicator ${card.trend}`}
                     />
@@ -97,7 +97,7 @@ const StatsCards = ({ statistics }) => {
                 )}
                 {card.trend === 'warning' && !card.change && (
                   <div className="warning-indicator">
-                    <img src="/警告.png" alt="警告" className="warning-icon" />
+                    <img src={`${import.meta.env.BASE_URL}警告.png`} alt="警告" className="warning-icon" />
                   </div>
                 )}
               </div>

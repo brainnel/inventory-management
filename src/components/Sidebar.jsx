@@ -20,18 +20,19 @@ const Sidebar = ({ activeTab, onTabChange, userInfo, onLogout }) => {
     return userInfo.username.charAt(0).toUpperCase()
   }
 
+  const baseUrl = import.meta.env.BASE_URL
   const tabs = [
     { 
       id: 'inventory', 
       name: '库存管理', 
-      icon: '/库存icon.png',
-      activeIcon: '/库存-选中.png'
+      icon: `${baseUrl}库存icon.png`,
+      activeIcon: `${baseUrl}库存-选中.png`
     },
     { 
       id: 'billing', 
       name: '结算管理', 
-      icon: '/结算icon.png',
-      activeIcon: '/结算-选中.png'
+      icon: `${baseUrl}结算icon.png`,
+      activeIcon: `${baseUrl}结算-选中.png`
     }
   ]
 
@@ -40,7 +41,7 @@ const Sidebar = ({ activeTab, onTabChange, userInfo, onLogout }) => {
       {/* 顶部导航栏 */}
       <header className="top-header">
         <div className="header-left">
-          <img src="/logo.png" alt="brainnel" className="header-logo" />
+          <img src={`${import.meta.env.BASE_URL}logo.png`} alt="brainnel" className="header-logo" />
         </div>
         
         <div className="header-right">

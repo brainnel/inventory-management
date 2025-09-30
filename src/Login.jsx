@@ -47,13 +47,13 @@ const Login = ({ onLoginSuccess }) => {
     <div className="login-container">
       <div className="login-content">
         <div className="login-left">
-          <img src="/banner.png" alt="办公插画" className="banner-image" />
+          <img src={`${import.meta.env.BASE_URL}banner.png`} alt="办公插画" className="banner-image" />
         </div>
         
         <div className="login-right">
           <div className="login-form">
             <div className="brand-section">
-              <img src="/logo.png" alt="brainnel logo" className="brand-logo" />
+              <img src={`${import.meta.env.BASE_URL}logo.png`} alt="brainnel logo" className="brand-logo" />
             </div>
             
             <h2 className="login-title">登录到仓库管理系统</h2>
