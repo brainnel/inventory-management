@@ -13,6 +13,12 @@ const Dashboard = ({ userInfo, onLogout }) => {
   const [statistics, setStatistics] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [pagination, setPagination] = useState({
+    page: 1,
+    size: 20,
+    total: 0,
+    totalPages: 0
+  })
   
   // 查询条件
   const [filters, setFilters] = useState({
@@ -33,7 +39,7 @@ const Dashboard = ({ userInfo, onLogout }) => {
   }
 
   // 获取商品数据
-  const fetchProducts = async (searchFilters = {}) => {
+  const fetchProducts = async (searchFilters = {}, page = 1, pageSize = 20) => {
     if (!userInfo?.supplier_no) return
     
     setLoading(true)
@@ -55,8 +61,14 @@ const Dashboard = ({ userInfo, onLogout }) => {
         apiFilters.stock_status = statusMap[searchFilters.stockStatus]
       }
       
-      const response = await productsAPI.getProductsList(userInfo.supplier_no, 1, 100, apiFilters)
+      const response = await productsAPI.getProductsList(userInfo.supplier_no, page, pageSize, apiFilters)
       setData(response.items || [])
+      setPagination({
+        page: response.page || page,
+        size: response.size || pageSize,
+        total: response.total || 0,
+        totalPages: response.total_pages || 0
+      })
     } catch (error) {
       console.error('获取商品数据失败:', error)
       setError('获取商品数据失败')
@@ -69,13 +81,24 @@ const Dashboard = ({ userInfo, onLogout }) => {
   useEffect(() => {
     if (userInfo?.supplier_no) {
       fetchStatistics()
-      fetchProducts()
+      fetchProducts(filters, 1, 20)
     }
   }, [userInfo])
 
   const handleSearch = (searchParams) => {
     setFilters(searchParams)
-    fetchProducts(searchParams)
+    // 搜索时重置到第一页
+    fetchProducts(searchParams, 1, pagination.size)
+  }
+
+  // 处理分页变化
+  const handlePageChange = (newPage) => {
+    fetchProducts(filters, newPage, pagination.size)
+  }
+
+  // 处理每页数量变化
+  const handlePageSizeChange = (newSize) => {
+    fetchProducts(filters, 1, newSize)
   }
   const handleTabChange = (tabId) => setActiveTab(tabId)
 
@@ -90,7 +113,13 @@ const Dashboard = ({ userInfo, onLogout }) => {
             {loading ? (
               <div style={{ padding: '16px' }}>加载中...</div>
             ) : (
-              <InventoryTable data={data} filters={filters} />
+              <InventoryTable 
+                data={data} 
+                filters={filters}
+                pagination={pagination}
+                onPageChange={handlePageChange}
+                onPageSizeChange={handlePageSizeChange}
+              />
             )}
           </>
         )
@@ -105,7 +134,13 @@ const Dashboard = ({ userInfo, onLogout }) => {
             {loading ? (
               <div style={{ padding: '16px' }}>加载中...</div>
             ) : (
-              <InventoryTable data={data} filters={filters} />
+              <InventoryTable 
+                data={data} 
+                filters={filters}
+                pagination={pagination}
+                onPageChange={handlePageChange}
+                onPageSizeChange={handlePageSizeChange}
+              />
             )}
           </>
         )

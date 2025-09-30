@@ -1,40 +1,27 @@
 import React, { useState, useMemo, useEffect } from 'react'
 
-const InventoryTable = ({ data, filters }) => {
-  const [currentPage, setCurrentPage] = useState(1)
-  const [pageSize, setPageSize] = useState(10)
+const InventoryTable = ({ data, filters, pagination, onPageChange, onPageSizeChange }) => {
   const [previewImage, setPreviewImage] = useState(null)
 
-  // 由于API已经进行过滤，直接使用返回的数据
-  const filteredData = useMemo(() => {
-    return data
-  }, [data])
-
-  // 分页数据
-  const paginatedData = useMemo(() => {
-    const start = (currentPage - 1) * pageSize
-    const end = start + pageSize
-    return filteredData.slice(start, end)
-  }, [filteredData, currentPage, pageSize])
-
-  const totalPages = Math.ceil(filteredData.length / pageSize)
+  // 直接使用API返回的数据，不需要前端分页
+  const paginatedData = data || []
 
   const handlePageChange = (page) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page)
+    if (page >= 1 && page <= pagination.totalPages) {
+      onPageChange(page)
     }
   }
 
   const handlePageSizeChange = (e) => {
-    setPageSize(Number(e.target.value))
-    setCurrentPage(1)
+    const newSize = Number(e.target.value)
+    onPageSizeChange(newSize)
   }
 
   const handleJumpToPage = (e) => {
     if (e.key === 'Enter') {
       const page = Number(e.target.value)
-      if (page >= 1 && page <= totalPages) {
-        setCurrentPage(page)
+      if (page >= 1 && page <= pagination.totalPages) {
+        onPageChange(page)
       }
       e.target.value = ''
     }
@@ -177,31 +164,31 @@ const InventoryTable = ({ data, filters }) => {
       <div className="pagination">
         <div className="pagination-info">
           <span>每页显示</span>
-          <select value={pageSize} onChange={handlePageSizeChange} className="page-size-select">
+          <select value={pagination.size || 20} onChange={handlePageSizeChange} className="page-size-select">
             <option value={10}>10</option>
             <option value={20}>20</option>
             <option value={50}>50</option>
             <option value={100}>100</option>
           </select>
-          <span>条</span>
+          <span>条，共 {pagination.total || 0} 条记录</span>
         </div>
 
         <div className="pagination-controls">
           <button 
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
+            onClick={() => handlePageChange(pagination.page - 1)}
+            disabled={pagination.page <= 1}
             className="pagination-btn"
           >
             上一页
           </button>
           
           <span className="page-info">
-            第 {currentPage} 页，共 {totalPages} 页
+            第 {pagination.page || 1} 页，共 {pagination.totalPages || 0} 页
           </span>
           
           <button 
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
+            onClick={() => handlePageChange(pagination.page + 1)}
+            disabled={pagination.page >= pagination.totalPages}
             className="pagination-btn"
           >
             下一页
@@ -213,7 +200,7 @@ const InventoryTable = ({ data, filters }) => {
           <input
             type="number"
             min={1}
-            max={totalPages}
+            max={pagination.totalPages || 1}
             placeholder="页码"
             onKeyDown={handleJumpToPage}
             className="page-jump-input"
