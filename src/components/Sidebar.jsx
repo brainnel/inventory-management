@@ -53,7 +53,7 @@ const Sidebar = ({ activeTab, onTabChange, userInfo, onLogout }) => {
             >
               <div className="user-avatar">{getUserInitial()}</div>
               <div className="user-details">
-                <span className="user-name">{userInfo?.full_name || userInfo?.username || '用户'}</span>
+                <span className="user-name">{userInfo?.username || '用户'}</span>
                 <span className="user-id">{userInfo?.supplier_no || ''}</span>
               </div>
               <span className={`dropdown-arrow ${isUserDropdownOpen ? 'open' : ''}`}>▼</span>
