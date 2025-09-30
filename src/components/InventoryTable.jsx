@@ -142,13 +142,13 @@ const InventoryTable = ({ data, filters, pagination, onPageChange, onPageSizeCha
                     <div className="sku-text">{item.internal_no || ''}</div>
                   </td>
                   <td className="product-name">
-                    <div className="name-text">{item.name_cn || ''}</div>
+                    <div className="name-text" title={item.name_cn || ''}>{item.name_cn || ''}</div>
                   </td>
                   <td>{(item.total_sales || 0).toLocaleString()}</td>
                   <td>{item.supply_stock || 0}</td>
                   <td>{inTransitStock}</td>
                   <td>{availableStock}</td>
-                  <td>{item.price ? `${parseFloat(item.price).toLocaleString()} FCFA` : '0 FCFA'}</td>
+                  <td>¥{item.price ? parseFloat(item.price).toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00'}</td>
                   <td>
                     <span className={`status-badge ${getStatusClass(status)}`}>
                       {status}
