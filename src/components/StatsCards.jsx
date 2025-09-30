@@ -1,14 +1,17 @@
 import React from 'react'
 
-const StatsCards = ({ data }) => {
-  // 统计数据计算
+const StatsCards = ({ statistics }) => {
+  // 使用API返回的统计数据
   const stats = {
-    totalProducts: data.length,
-    totalSalesQty: data.reduce((sum, item) => sum + (item.total_sales || 0), 0),
-    lowStockCount: data.filter(item => (item.stock || 0) < 10).length, // 定义库存低于10为不足
-    sufficientStockCount: data.filter(item => (item.stock || 0) >= 50).length, // 定义库存大于等于50为充足
-    warningStockCount: data.filter(item => (item.stock || 0) >= 10 && (item.stock || 0) < 50).length, // 定义库存10-49为预警
+    totalProducts: statistics?.total_products || 0,
+    totalSalesQty: statistics?.total_sales || 0,
+    sufficientStockCount: statistics?.sufficient_stock_count || 0,
+    warningStockCount: statistics?.warning_stock_count || 0,
+    lowStockCount: statistics?.insufficient_stock_count || 0,
   }
+
+  // 加载状态处理
+  const isLoading = !statistics
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('zh-CN', {
@@ -38,35 +41,35 @@ const StatsCards = ({ data }) => {
   const cards = [
     {
       title: '商品总数',
-      value: formatNumber(stats.totalProducts),
+      value: isLoading ? '--' : formatNumber(stats.totalProducts),
       change: '',
       trend: 'up',
       color: 'blue'
     },
     {
       title: '累计销量',
-      value: formatNumber(stats.totalSalesQty),
+      value: isLoading ? '--' : formatNumber(stats.totalSalesQty),
       change: '',
       trend: 'up',
       color: 'blue'
     },
     {
       title: '库存充足',
-      value: formatNumber(stats.sufficientStockCount),
+      value: isLoading ? '--' : formatNumber(stats.sufficientStockCount),
       change: '',
       trend: 'up',
       color: 'green'
     },
     {
       title: '库存预警',
-      value: formatNumber(stats.warningStockCount),
+      value: isLoading ? '--' : formatNumber(stats.warningStockCount),
       change: '',
       trend: 'warning',
       color: 'orange'
     },
     {
       title: '库存不足(需补货)',
-      value: formatNumber(stats.lowStockCount),
+      value: isLoading ? '--' : formatNumber(stats.lowStockCount),
       change: '',
       trend: 'warning',
       color: 'red'

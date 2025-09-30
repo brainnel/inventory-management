@@ -6,9 +6,10 @@ const StatusSelect = ({ value, onChange }) => {
 
   const statusOptions = [
     { value: 'all', label: '全部' },
-    { value: '待提现', label: '待提现' },
-    { value: '打款中', label: '打款中' },
-    { value: '已打款', label: '已打款' }
+    { value: 'pending_withdrawal', label: '待提现' },
+    { value: 'payment', label: '打款中' },
+    { value: 'done', label: '已打款' },
+    { value: 'pending_review', label: '待审核' }
   ]
 
   // 点击外部关闭下拉框

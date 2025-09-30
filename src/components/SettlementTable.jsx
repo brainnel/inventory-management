@@ -1,15 +1,22 @@
 import React, { useState, useMemo } from 'react'
 import MonthPicker from './MonthPicker'
 import StatusSelect from './StatusSelect'
+import BillDetailModal from './BillDetailModal'
 
-const SettlementTable = ({ data, filters, onSearch }) => {
+const SettlementTable = ({ data, filters, onSearch, loading = false }) => {
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
+  const [selectedBill, setSelectedBill] = useState(null)
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false)
 
-  // 过滤数据
+  // 过滤数据（确保 data 是数组）
   const filteredData = useMemo(() => {
+    if (!Array.isArray(data)) {
+      return []
+    }
     return data.filter(item => {
-      const matchBillNumber = !filters.billNumber || item.billNumber.includes(filters.billNumber)
+      const matchBillNumber = !filters.billNumber || 
+        (item.bill_number && item.bill_number.includes(filters.billNumber))
       const matchStatus = filters.billStatus === 'all' || item.status === filters.billStatus
       
       return matchBillNumber && matchStatus
@@ -53,13 +60,45 @@ const SettlementTable = ({ data, filters, onSearch }) => {
     }).format(amount)
   }
 
+  // 状态映射和样式
+  const getStatusText = (status) => {
+    switch (status) {
+      case 'pending_withdrawal': return '待提现'
+      case 'payment': return '打款中'
+      case 'done': return '已打款'
+      case 'pending_review': return '待审核'
+      default: return status || '未知状态'
+    }
+  }
+
   const getStatusClass = (status) => {
     switch (status) {
-      case '已打款': return 'status-confirmed'
-      case '打款中': return 'status-processing'
-      case '待提现': return 'status-pending'
+      case 'done': return 'status-confirmed'
+      case 'payment': return 'status-processing'
+      case 'pending_withdrawal': return 'status-pending'
+      case 'pending_review': return 'status-review'
       default: return ''
     }
+  }
+
+  // 处理账单明细查看
+  const handleViewBillDetail = (item) => {
+    setSelectedBill({
+      bill_id: item.bill_id || item.id,
+      bill_number: item.bill_number || item.billNumber,
+      billing_date: item.billing_date || item.exportDate,
+      amount: item.amount,
+      status: item.status,
+      due_date: item.due_date,
+      remarks: item.remarks
+    })
+    setIsDetailModalOpen(true)
+  }
+
+  // 关闭账单明细弹窗
+  const handleCloseDetailModal = () => {
+    setIsDetailModalOpen(false)
+    setSelectedBill(null)
   }
 
   return (
@@ -108,24 +147,51 @@ const SettlementTable = ({ data, filters, onSearch }) => {
               </tr>
             </thead>
             <tbody>
-              {paginatedData.map(item => (
-                <tr key={item.id}>
-                  <td>{item.exportDate}</td>
-                  <td className="bill-number">{item.billNumber}</td>
-                  <td>{item.settlementPeriod}</td>
-                  <td className="amount">{formatCurrency(item.amount)}</td>
-                  <td>
-                    <span className={`status-badge ${getStatusClass(item.status)}`}>
-                      ● {item.status}
-                    </span>
-                  </td>
-                  <td>
-                    <button className="action-btn download-btn">
-                      账单明细下载
-                    </button>
+              {loading ? (
+                <tr>
+                  <td colSpan="6" className="loading-cell">
+                    <div className="loading-spinner">正在加载...</div>
                   </td>
                 </tr>
-              ))}
+              ) : paginatedData.length === 0 ? (
+                <tr>
+                  <td colSpan="6" className="empty-cell">
+                    <div className="empty-state">
+                      {filteredData.length === 0 && Array.isArray(data) && data.length > 0 
+                        ? '没有找到匹配的账单记录' 
+                        : '暂无账单数据'
+                      }
+                    </div>
+                  </td>
+                </tr>
+              ) : (
+                paginatedData.map(item => (
+                  <tr key={item.bill_id || item.id}>
+                    <td>{item.billing_date || item.exportDate || '-'}</td>
+                    <td className="bill-number">{item.bill_number || item.billNumber || '-'}</td>
+                    <td>{item.due_date ? `截止日期: ${item.due_date}` : item.settlementPeriod || '-'}</td>
+                    <td className="amount">{formatCurrency(parseFloat(item.amount) || 0)}</td>
+                    <td>
+                      <span className={`status-badge ${getStatusClass(item.status)}`}>
+                        ● {getStatusText(item.status)}
+                      </span>
+                    </td>
+                    <td>
+                      <button 
+                        className="action-btn view-detail-btn"
+                        onClick={() => handleViewBillDetail(item)}
+                      >
+                        账单明细查看
+                      </button>
+                      {item.remarks && (
+                        <div className="remarks" title={item.remarks}>
+                          备注: {item.remarks.length > 10 ? item.remarks.substring(0, 10) + '...' : item.remarks}
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -179,6 +245,13 @@ const SettlementTable = ({ data, filters, onSearch }) => {
           </div>
         </div>
       </div>
+
+      {/* 账单明细弹窗 */}
+      <BillDetailModal
+        isOpen={isDetailModalOpen}
+        onClose={handleCloseDetailModal}
+        billInfo={selectedBill}
+      />
     </div>
   )
 }

@@ -71,14 +71,77 @@ export const authAPI = {
 // 商品相关API
 export const productsAPI = {
   // 获取商品列表
-  getProductsList: async (supplierNo, page = 1, size = 50) => {
+  getProductsList: async (supplierNo, page = 1, size = 50, filters = {}) => {
+    const params = {
+      supplier_no: supplierNo,
+      page,
+      size,
+    }
+    
+    // 添加可选的过滤参数
+    if (filters.internal_no) {
+      params.internal_no = filters.internal_no
+    }
+    if (filters.stock_status) {
+      params.stock_status = filters.stock_status
+    }
+    
     const response = await api.get('/products/list', {
-      params: {
-        supplier_no: supplierNo,
-        page,
-        size,
-      },
+      params,
     })
+    return response.data
+  },
+
+  // 获取商品统计信息
+  getProductStatistics: async (supplierNo) => {
+    const params = {}
+    if (supplierNo) {
+      params.supplier_no = supplierNo
+    }
+    
+    const response = await api.get('/products/statistics', {
+      params,
+    })
+    return response.data
+  },
+}
+
+// 账单相关API
+export const settlementAPI = {
+  // 获取账单列表
+  getSettlementBills: async (status = 'all') => {
+    const params = {}
+    if (status && status !== 'all') {
+      params.status = status
+    }
+    
+    const response = await api.get('/settlement-bills/list', {
+      params,
+    })
+    return response.data
+  },
+
+  // 获取账单汇总信息
+  getSettlementBillsSummary: async () => {
+    const response = await api.get('/settlement-bills/summary')
+    return response.data
+  },
+
+  // 获取账单金额汇总
+  getSettlementBillsAmountSummary: async () => {
+    const response = await api.get('/settlement-bills/amount-summary')
+    return response.data
+  },
+
+  // 提现接口
+  withdrawBills: async () => {
+    const response = await api.post('/settlement-bills/withdraw')
+    return response.data
+  },
+
+  // 获取账单商品明细
+  getBillProducts: async (billId) => {
+    const response = await api.get(`/settlement-bills/${billId}/products`)
     return response.data
   },
 }

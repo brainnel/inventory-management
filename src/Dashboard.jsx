@@ -10,6 +10,7 @@ import { productsAPI } from './services/api'
 const Dashboard = ({ userInfo, onLogout }) => {
   const [activeTab, setActiveTab] = useState('inventory')
   const [data, setData] = useState([])
+  const [statistics, setStatistics] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   
@@ -19,15 +20,42 @@ const Dashboard = ({ userInfo, onLogout }) => {
     stockStatus: 'all',
   })
 
+  // 获取商品统计数据
+  const fetchStatistics = async () => {
+    if (!userInfo?.supplier_no) return
+    
+    try {
+      const response = await productsAPI.getProductStatistics(userInfo.supplier_no)
+      setStatistics(response)
+    } catch (error) {
+      console.error('获取统计数据失败:', error)
+    }
+  }
+
   // 获取商品数据
-  const fetchProducts = async () => {
+  const fetchProducts = async (searchFilters = {}) => {
     if (!userInfo?.supplier_no) return
     
     setLoading(true)
     setError('')
     
     try {
-      const response = await productsAPI.getProductsList(userInfo.supplier_no, 1, 100)
+      // 构建 API 过滤参数
+      const apiFilters = {}
+      if (searchFilters.sku && searchFilters.sku.trim()) {
+        apiFilters.internal_no = searchFilters.sku.trim()
+      }
+      if (searchFilters.stockStatus && searchFilters.stockStatus !== 'all') {
+        // 将前端的状态映射为API期望的数字
+        const statusMap = {
+          '充足': 1,
+          '预警': 2,
+          '不足': 3
+        }
+        apiFilters.stock_status = statusMap[searchFilters.stockStatus]
+      }
+      
+      const response = await productsAPI.getProductsList(userInfo.supplier_no, 1, 100, apiFilters)
       setData(response.items || [])
     } catch (error) {
       console.error('获取商品数据失败:', error)
@@ -39,10 +67,16 @@ const Dashboard = ({ userInfo, onLogout }) => {
 
   // 组件加载时获取数据
   useEffect(() => {
-    fetchProducts()
+    if (userInfo?.supplier_no) {
+      fetchStatistics()
+      fetchProducts()
+    }
   }, [userInfo])
 
-  const handleSearch = (next) => setFilters(next)
+  const handleSearch = (searchParams) => {
+    setFilters(searchParams)
+    fetchProducts(searchParams)
+  }
   const handleTabChange = (tabId) => setActiveTab(tabId)
 
   const renderContent = () => {
@@ -50,7 +84,7 @@ const Dashboard = ({ userInfo, onLogout }) => {
       case 'inventory':
         return (
           <>
-            <StatsCards data={data} />
+            <StatsCards statistics={statistics} />
             <SearchForm onSearch={handleSearch} />
             {error && <div className="error" style={{color:'#ef4444', marginBottom: '8px'}}>{error}</div>}
             {loading ? (
@@ -65,7 +99,7 @@ const Dashboard = ({ userInfo, onLogout }) => {
       default:
         return (
           <>
-            <StatsCards data={data} />
+            <StatsCards statistics={statistics} />
             <SearchForm onSearch={handleSearch} />
             {error && <div className="error" style={{color:'#ef4444', marginBottom: '8px'}}>{error}</div>}
             {loading ? (

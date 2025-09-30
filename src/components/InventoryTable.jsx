@@ -5,15 +5,10 @@ const InventoryTable = ({ data, filters }) => {
   const [pageSize, setPageSize] = useState(10)
   const [previewImage, setPreviewImage] = useState(null)
 
-  // 过滤数据
+  // 由于API已经进行过滤，直接使用返回的数据
   const filteredData = useMemo(() => {
-    return data.filter(item => {
-      const matchSku = !filters.sku || (item.internal_no && item.internal_no.includes(filters.sku))
-      const matchStatus = filters.stockStatus === 'all' || item.status === filters.stockStatus
-      
-      return matchSku && matchStatus
-    })
-  }, [data, filters])
+    return data
+  }, [data])
 
   // 分页数据
   const paginatedData = useMemo(() => {
@@ -59,6 +54,16 @@ const InventoryTable = ({ data, filters }) => {
       case '预警': return 'status-warning'
       case '不足': return 'status-insufficient'
       default: return ''
+    }
+  }
+
+  // 根据stock_status数值转换为文字状态
+  const getStatusText = (stockStatus) => {
+    switch (stockStatus) {
+      case 1: return '充足'
+      case 2: return '预警'
+      case 3: return '不足'
+      default: return '充足' // 默认值
     }
   }
 
@@ -133,7 +138,7 @@ const InventoryTable = ({ data, filters }) => {
               // 根据新的数据结构计算字段
               const availableStock = item.stock || 0 // 在售
               const inTransitStock = Math.max(0, (item.supply_stock || 0) - (item.stock || 0) - (item.locked_stock || 0)) // 在途，负数显示0
-              const status = '充足' // 根据需求先都写充足
+              const status = getStatusText(item.stock_status) // 使用API返回的stock_status
               
               return (
                 <tr key={item.internal_no || index}>
