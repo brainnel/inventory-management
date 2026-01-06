@@ -60,6 +60,23 @@ const SettlementTable = ({ data, filters, onSearch, loading = false }) => {
     }).format(amount)
   }
 
+  // 根据账单号解析结算期间（如 JD-202512 -> 2025-12-01 ~ 2025-12-31）
+  const getSettlementPeriod = (billNumber) => {
+    if (!billNumber) return '-'
+    // 匹配年月格式，如 JD-202512 或 XXX-202501
+    const match = billNumber.match(/(\d{4})(\d{2})$/)
+    if (match) {
+      const year = parseInt(match[1])
+      const month = parseInt(match[2])
+      // 计算该月的最后一天
+      const lastDay = new Date(year, month, 0).getDate()
+      const startDate = `${year}-${String(month).padStart(2, '0')}-01`
+      const endDate = `${year}-${String(month).padStart(2, '0')}-${lastDay}`
+      return `${startDate} ~ ${endDate}`
+    }
+    return '-'
+  }
+
   // 状态映射和样式
   const getStatusText = (status) => {
     switch (status) {
@@ -167,9 +184,9 @@ const SettlementTable = ({ data, filters, onSearch, loading = false }) => {
               ) : (
                 paginatedData.map(item => (
                   <tr key={item.bill_id || item.id}>
-                    <td>{item.billing_date || item.exportDate || '-'}</td>
+                    <td>{item.billing_date || '-'}</td>
                     <td className="bill-number">{item.bill_number || item.billNumber || '-'}</td>
-                    <td>{item.due_date ? `截止日期: ${item.due_date}` : item.settlementPeriod || '-'}</td>
+                    <td>{getSettlementPeriod(item.bill_number || item.billNumber)}</td>
                     <td className="amount">{formatCurrency(parseFloat(item.amount) || 0)}</td>
                     <td>
                       <span className={`status-badge ${getStatusClass(item.status)}`}>
