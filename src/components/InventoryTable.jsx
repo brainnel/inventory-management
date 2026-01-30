@@ -244,9 +244,7 @@ const InventoryTable = ({ data, filters, pagination, onPageChange, onPageSizeCha
       <div className="pagination">
         <div className="pagination-info">
           <span>每页显示</span>
-          <select value={pagination.size || 20} onChange={handlePageSizeChange} className="page-size-select">
-            <option value={10}>10</option>
-            <option value={20}>20</option>
+          <select value={pagination.size || 50} onChange={handlePageSizeChange} className="page-size-select">
             <option value={50}>50</option>
             <option value={100}>100</option>
           </select>

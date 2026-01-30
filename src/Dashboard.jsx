@@ -15,7 +15,7 @@ const Dashboard = ({ userInfo, onLogout }) => {
   const [error, setError] = useState('')
   const [pagination, setPagination] = useState({
     page: 1,
-    size: 20,
+    size: 50,
     total: 0,
     totalPages: 0
   })
@@ -43,7 +43,7 @@ const Dashboard = ({ userInfo, onLogout }) => {
   }
 
   // 获取商品数据
-  const fetchProducts = async (searchFilters = {}, page = 1, pageSize = 20) => {
+  const fetchProducts = async (searchFilters = {}, page = 1, pageSize = 50) => {
     if (!userInfo?.supplier_no) return
 
     setLoading(true)
@@ -91,7 +91,7 @@ const Dashboard = ({ userInfo, onLogout }) => {
   useEffect(() => {
     if (userInfo?.supplier_no) {
       fetchStatistics()
-      fetchProducts(filters, 1, 20)
+      fetchProducts(filters, 1, 50)
     }
   }, [userInfo])
 
