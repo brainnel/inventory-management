@@ -27,12 +27,14 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    // 只有在非登录请求时，401才需要跳转（登录失败的401由Login组件处理）
+    const isLoginRequest = error.config?.url?.includes('/auth/login')
+    if (error.response?.status === 401 && !isLoginRequest) {
       // token过期，清除本地存储
       localStorage.removeItem('access_token')
       localStorage.removeItem('user_info')
-      // 重定向到登录页
-      window.location.href = '/'
+      // 重定向到登录页（使用正确的base路径）
+      window.location.href = '/inventory-management/'
     }
     return Promise.reject(error)
   }
