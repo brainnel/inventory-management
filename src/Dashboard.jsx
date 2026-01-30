@@ -24,7 +24,11 @@ const Dashboard = ({ userInfo, onLogout }) => {
   const [filters, setFilters] = useState({
     sku: '',
     stockStatus: 'all',
+    supplierNo: 'all',
   })
+
+  // 判断是否显示供应商筛选（BR用户可以看到所有供应商）
+  const showSupplierFilter = userInfo?.supplier_no === 'BR'
 
   // 获取商品统计数据
   const fetchStatistics = async () => {
@@ -41,10 +45,10 @@ const Dashboard = ({ userInfo, onLogout }) => {
   // 获取商品数据
   const fetchProducts = async (searchFilters = {}, page = 1, pageSize = 20) => {
     if (!userInfo?.supplier_no) return
-    
+
     setLoading(true)
     setError('')
-    
+
     try {
       // 构建 API 过滤参数
       const apiFilters = {}
@@ -60,8 +64,14 @@ const Dashboard = ({ userInfo, onLogout }) => {
         }
         apiFilters.stock_status = statusMap[searchFilters.stockStatus]
       }
-      
-      const response = await productsAPI.getProductsList(userInfo.supplier_no, page, pageSize, apiFilters)
+
+      // 确定查询的供应商编号
+      let supplierNo = userInfo.supplier_no
+      if (showSupplierFilter && searchFilters.supplierNo && searchFilters.supplierNo !== 'all') {
+        supplierNo = searchFilters.supplierNo
+      }
+
+      const response = await productsAPI.getProductsList(supplierNo, page, pageSize, apiFilters)
       setData(response.items || [])
       setPagination({
         page: response.page || page,
@@ -108,7 +118,7 @@ const Dashboard = ({ userInfo, onLogout }) => {
         return (
           <>
             <StatsCards statistics={statistics} />
-            <SearchForm onSearch={handleSearch} />
+            <SearchForm onSearch={handleSearch} showSupplierFilter={showSupplierFilter} />
             {error && <div className="error" style={{color:'#ef4444', marginBottom: '8px'}}>{error}</div>}
             {loading ? (
               <div style={{ padding: '16px' }}>加载中...</div>
@@ -129,7 +139,7 @@ const Dashboard = ({ userInfo, onLogout }) => {
         return (
           <>
             <StatsCards statistics={statistics} />
-            <SearchForm onSearch={handleSearch} />
+            <SearchForm onSearch={handleSearch} showSupplierFilter={showSupplierFilter} />
             {error && <div className="error" style={{color:'#ef4444', marginBottom: '8px'}}>{error}</div>}
             {loading ? (
               <div style={{ padding: '16px' }}>加载中...</div>
