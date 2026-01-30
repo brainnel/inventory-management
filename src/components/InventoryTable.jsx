@@ -2,9 +2,64 @@ import React, { useState, useMemo, useEffect } from 'react'
 
 const InventoryTable = ({ data, filters, pagination, onPageChange, onPageSizeChange }) => {
   const [previewImage, setPreviewImage] = useState(null)
+  const [sortField, setSortField] = useState(null) // 排序字段
+  const [sortOrder, setSortOrder] = useState('asc') // 排序顺序: 'asc' | 'desc'
 
-  // 直接使用API返回的数据，不需要前端分页
-  const paginatedData = data || []
+  // 可排序的字段配置
+  const sortableFields = {
+    total_sales: '累计销量',
+    supply_stock: '库存',
+    in_transit: '在途',
+    stock: '在售',
+    price: '供货价'
+  }
+
+  // 处理排序点击
+  const handleSort = (field) => {
+    if (sortField === field) {
+      // 同一字段，切换排序顺序
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
+    } else {
+      // 新字段，默认降序
+      setSortField(field)
+      setSortOrder('desc')
+    }
+  }
+
+  // 获取排序图标
+  const getSortIcon = (field) => {
+    if (sortField !== field) {
+      return '↕' // 未排序
+    }
+    return sortOrder === 'asc' ? '↑' : '↓'
+  }
+
+  // 对数据进行排序
+  const sortedData = useMemo(() => {
+    if (!data || !sortField) return data || []
+
+    return [...data].sort((a, b) => {
+      let valueA, valueB
+
+      if (sortField === 'in_transit') {
+        // 在途 = supply_stock - stock - locked_stock
+        valueA = Math.max(0, (a.supply_stock || 0) - (a.stock || 0) - (a.locked_stock || 0))
+        valueB = Math.max(0, (b.supply_stock || 0) - (b.stock || 0) - (b.locked_stock || 0))
+      } else {
+        valueA = a[sortField] || 0
+        valueB = b[sortField] || 0
+      }
+
+      if (sortOrder === 'asc') {
+        return valueA - valueB
+      } else {
+        return valueB - valueA
+      }
+    })
+  }, [data, sortField, sortOrder])
+
+  // 使用排序后的数据
+  const paginatedData = sortedData
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= pagination.totalPages) {
@@ -112,11 +167,36 @@ const InventoryTable = ({ data, filters, pagination, onPageChange, onPageSizeCha
               <th>图片</th>
               <th>SKU</th>
               <th>商品名称</th>
-              <th>累计销量</th>
-              <th>库存</th>
-              <th>在途</th>
-              <th>在售</th>
-              <th>供货价</th>
+              <th
+                className={`sortable-header ${sortField === 'total_sales' ? 'active' : ''}`}
+                onClick={() => handleSort('total_sales')}
+              >
+                累计销量 <span className="sort-icon">{getSortIcon('total_sales')}</span>
+              </th>
+              <th
+                className={`sortable-header ${sortField === 'supply_stock' ? 'active' : ''}`}
+                onClick={() => handleSort('supply_stock')}
+              >
+                库存 <span className="sort-icon">{getSortIcon('supply_stock')}</span>
+              </th>
+              <th
+                className={`sortable-header ${sortField === 'in_transit' ? 'active' : ''}`}
+                onClick={() => handleSort('in_transit')}
+              >
+                在途 <span className="sort-icon">{getSortIcon('in_transit')}</span>
+              </th>
+              <th
+                className={`sortable-header ${sortField === 'stock' ? 'active' : ''}`}
+                onClick={() => handleSort('stock')}
+              >
+                在售 <span className="sort-icon">{getSortIcon('stock')}</span>
+              </th>
+              <th
+                className={`sortable-header ${sortField === 'price' ? 'active' : ''}`}
+                onClick={() => handleSort('price')}
+              >
+                供货价 <span className="sort-icon">{getSortIcon('price')}</span>
+              </th>
               <th>状态</th>
             </tr>
           </thead>

@@ -2096,3 +2096,36 @@
     min-width: 800px;
   }
 }
+
+/* 表格排序样式 */
+.sortable-header {
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.sortable-header:hover {
+  background-color: #f0f0f5;
+}
+
+.sortable-header.active {
+  background-color: #e8e8f0;
+  color: #4F46E5;
+}
+
+.sort-icon {
+  display: inline-block;
+  margin-left: 4px;
+  font-size: 12px;
+  color: #9CA3AF;
+  transition: color 0.2s ease;
+}
+
+.sortable-header.active .sort-icon {
+  color: #4F46E5;
+}
+
+.sortable-header:hover .sort-icon {
+  color: #6B7280;
+}
