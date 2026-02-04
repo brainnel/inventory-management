@@ -8,7 +8,7 @@ const InventoryTable = ({ data, filters, pagination, onPageChange, onPageSizeCha
   // 可排序的字段配置
   const sortableFields = {
     total_sales: '累计销量',
-    supply_stock: '库存',
+    supply_stock: '备货库存',
     in_transit: '在途',
     stock: '在售',
     price: '供货价'
@@ -42,9 +42,9 @@ const InventoryTable = ({ data, filters, pagination, onPageChange, onPageSizeCha
       let valueA, valueB
 
       if (sortField === 'in_transit') {
-        // 在途 = supply_stock - stock - locked_stock
-        valueA = Math.max(0, (a.supply_stock || 0) - (a.stock || 0) - (a.locked_stock || 0))
-        valueB = Math.max(0, (b.supply_stock || 0) - (b.stock || 0) - (b.locked_stock || 0))
+        // 在途 = 备货库存 - 销量 - 在售库存
+        valueA = Math.max(0, (a.supply_stock || 0) - (a.total_sales || 0) - (a.stock || 0))
+        valueB = Math.max(0, (b.supply_stock || 0) - (b.total_sales || 0) - (b.stock || 0))
       } else {
         valueA = a[sortField] || 0
         valueB = b[sortField] || 0
@@ -177,7 +177,7 @@ const InventoryTable = ({ data, filters, pagination, onPageChange, onPageSizeCha
                 className={`sortable-header ${sortField === 'supply_stock' ? 'active' : ''}`}
                 onClick={() => handleSort('supply_stock')}
               >
-                库存 <span className="sort-icon">{getSortIcon('supply_stock')}</span>
+                备货库存 <span className="sort-icon">{getSortIcon('supply_stock')}</span>
               </th>
               <th
                 className={`sortable-header ${sortField === 'in_transit' ? 'active' : ''}`}
@@ -204,7 +204,7 @@ const InventoryTable = ({ data, filters, pagination, onPageChange, onPageSizeCha
             {paginatedData.map((item, index) => {
               // 根据新的数据结构计算字段
               const availableStock = item.stock || 0 // 在售
-              const inTransitStock = Math.max(0, (item.supply_stock || 0) - (item.stock || 0) - (item.locked_stock || 0)) // 在途，负数显示0
+              const inTransitStock = Math.max(0, (item.supply_stock || 0) - (item.total_sales || 0) - (item.stock || 0)) // 在途 = 备货库存 - 销量 - 在售库存
               const status = getStatusText(item.stock_status) // 使用API返回的stock_status
               
               return (
