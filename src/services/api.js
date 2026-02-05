@@ -146,6 +146,14 @@ export const settlementAPI = {
     const response = await api.get(`/settlement-bills/${billId}/products`)
     return response.data
   },
+
+  // 导出账单Excel
+  exportBillExcel: async (billId) => {
+    const response = await api.get(`/settlement-bills/${billId}/export`, {
+      responseType: 'blob',
+    })
+    return response
+  },
 }
 
 // 工具函数

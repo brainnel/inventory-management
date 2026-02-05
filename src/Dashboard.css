@@ -1229,6 +1229,24 @@
   color: white;
 }
 
+.export-btn {
+  background: none;
+  border: 1px solid #2563eb;
+  color: #2563eb;
+}
+
+.export-btn:hover {
+  background: #2563eb;
+  color: white;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
 /* 加载和错误状态样式 */
 .loading, .loading-cell {
   text-align: center;

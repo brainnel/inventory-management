@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react'
 import MonthPicker from './MonthPicker'
 import StatusSelect from './StatusSelect'
 import BillDetailModal from './BillDetailModal'
+import { settlementAPI } from '../services/api'
 
 const SettlementTable = ({ data, filters, onSearch, loading = false }) => {
   const [currentPage, setCurrentPage] = useState(1)
@@ -118,6 +119,38 @@ const SettlementTable = ({ data, filters, onSearch, loading = false }) => {
     setSelectedBill(null)
   }
 
+  // 下载账单Excel
+  const handleExportBill = async (item) => {
+    try {
+      const billId = item.bill_id || item.id
+      const response = await settlementAPI.exportBillExcel(billId)
+      
+      // 创建下载链接
+      const url = window.URL.createObjectURL(new Blob([response.data]))
+      const link = document.createElement('a')
+      link.href = url
+      
+      // 从响应头获取文件名，如果没有则使用默认名称
+      const contentDisposition = response.headers['content-disposition']
+      let filename = `${item.bill_number || 'bill'}_settlement.xlsx`
+      if (contentDisposition) {
+        const filenameMatch = contentDisposition.match(/filename=([^;]+)/)
+        if (filenameMatch) {
+          filename = filenameMatch[1].replace(/"/g, '')
+        }
+      }
+      
+      link.setAttribute('download', filename)
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+      window.URL.revokeObjectURL(url)
+    } catch (error) {
+      console.error('导出账单失败:', error)
+      alert('导出账单失败，请稍后重试')
+    }
+  }
+
   return (
     <div className="settlement-table-container">
       <h2 className="section-title">账单管理</h2>
@@ -194,12 +227,21 @@ const SettlementTable = ({ data, filters, onSearch, loading = false }) => {
                       </span>
                     </td>
                     <td>
-                      <button 
-                        className="action-btn view-detail-btn"
-                        onClick={() => handleViewBillDetail(item)}
-                      >
-                        账单明细查看
-                      </button>
+                      <div className="action-buttons">
+                        <button 
+                          className="action-btn view-detail-btn"
+                          onClick={() => handleViewBillDetail(item)}
+                        >
+                          账单明细查看
+                        </button>
+                        <button 
+                          className="action-btn export-btn"
+                          onClick={() => handleExportBill(item)}
+                          title="下载Excel账单"
+                        >
+                          下载
+                        </button>
+                      </div>
                       {item.remarks && (
                         <div className="remarks" title={item.remarks}>
                           备注: {item.remarks.length > 10 ? item.remarks.substring(0, 10) + '...' : item.remarks}
